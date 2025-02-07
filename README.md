@@ -4,7 +4,10 @@
 ```bash
 python3 -m venv venv
 ```
-
+## Activate Virtual Environment
+```bash
+source venv/bin/activate
+```
 ## Download Dependencies
 ```bash
 pip install django pillow
