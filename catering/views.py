@@ -8,6 +8,14 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .models import Menu, Order
 from django.http import HttpResponseForbidden
 
+def Homepage(request):
+    menu = Menu.objects.all().order_by('-price')[:4]
+    context = {
+        'name': request.user.username,
+        'menu': menu
+    }
+    return render(request, 'home.html', context)
+
 def register_view(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
