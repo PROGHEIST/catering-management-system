@@ -2,11 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from .forms import UserRegistrationForm, UserLoginForm
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Menu
-from .forms import MenuForm
+from .forms import MenuForm, EventBookingForm
 from django.contrib.admin.views.decorators import staff_member_required
-from .models import Menu, Order
+from .models import Menu, Order, EventBooking
 from django.http import HttpResponseForbidden
+
 
 def Homepage(request):
     menu = Menu.objects.all().order_by('-price')[:4]
@@ -16,16 +16,32 @@ def Homepage(request):
     }
     return render(request, 'home.html', context)
 
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib import messages
+from .forms import UserRegistrationForm
+
 def register_view(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('login')  # Redirect to login page instead of dashboard
+            messages.success(request, "Account created successfully! 🎉")
+            return redirect('login')  # Redirect after successful signup
+        else:
+            # Show form errors as messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.capitalize()}: {error}")
+
     else:
         form = UserRegistrationForm()
+
     return render(request, "auth/register.html", {"form": form})
+
+
 
 
 def login_view(request):
@@ -34,7 +50,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('dashboard')
+            return redirect('home')
     else:
         form = UserLoginForm()
     return render(request, "auth/login.html", {"form": form})
@@ -43,6 +59,26 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
+
+
+@login_required
+def book_event(request):
+    if request.method == "POST":
+        form = EventBookingForm(request.POST)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.customer = request.user  # Assign the logged-in user
+            event.save()
+            return redirect('event_list')  # Redirect to event list page
+    else:
+        form = EventBookingForm()
+    
+    return render(request, 'event_booking.html', {'form': form})
+
+@login_required
+def event_list(request):
+    events = EventBooking.objects.filter(customer=request.user)
+    return render(request, 'event_list.html', {'events': events})
 
 
 @login_required

@@ -17,6 +17,7 @@
                 <li><a href="#" class="text-gray-700 hover:text-red-500">Home</a></li>
                 <li><a href="#menu" class="text-gray-700 hover:text-red-500">Menu</a></li>
                 <li><a href="#contact" class="text-gray-700 hover:text-red-500">Contact</a></li>
+                <li><a href="{% url 'event_list' %}" class="text-gray-700 hover:text-red-500">My Events</a></li>
                 <li><a href="{% url 'register' %}" class="text-gray-700 hover:text-red-500">Sign Up</a></li>
             </ul>
             <a href="{% url 'order_menu' %}" class="hidden md:block bg-red-600 text-white px-4 py-2 rounded-md">Order Now</a>
@@ -29,7 +30,7 @@
         <div class="bg-black bg-opacity-50 p-8 rounded-lg">
             <h1 class="text-4xl md:text-6xl font-bold">Delicious Catering Services</h1>
             <p class="mt-4 text-lg">Delivering fresh and tasty food for every occasion</p>
-            <a href="{% url 'order_menu' %}" class="mt-6 inline-block bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Explore Menu</a>
+            <a href="{% url 'book_event' %}" class="mt-6 inline-block bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Book Event</a>
         </div>
     </header>
 

@@ -50,20 +50,32 @@ class Order(models.Model):
         return f"Order {self.id} - {self.status}"
 
 
+
 class EventBooking(models.Model):
+    EVENT_CHOICES = [
+        ('wedding', 'Wedding'),
+        ('birthday', 'Birthday'),
+        ('corporate', 'Corporate Event'),
+        ('engagement', 'Engagement'),
+        ('other', 'Other'),
+    ]
+    
     STATUS_CHOICES = [
         ('pending', 'Pending'),
         ('approved', 'Approved'),
         ('completed', 'Completed'),
     ]
+
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    event_type = models.CharField(max_length=20, choices=EVENT_CHOICES, default='other')
     event_date = models.DateTimeField()
     venue = models.CharField(max_length=255)
     guest_count = models.IntegerField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self):
-        return f"Event on {self.event_date} at {self.venue}"
+        return f"{self.get_event_type_display()} on {self.event_date} at {self.venue}"
+
 
 
 class Payment(models.Model):
