@@ -1,87 +1,103 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catering Management System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body class="bg-gray-100">
+{% extends 'base.html' %}
 
-    <!-- Navbar -->
-    <nav class="bg-white shadow-md">
-        <div class="container mx-auto flex justify-between items-center p-4">
-            <a href="#" class="text-2xl font-bold text-red-600">CateringPro</a>
-            <ul class="hidden md:flex space-x-6">
-                <li><a href="#" class="text-gray-700 hover:text-red-500">Home</a></li>
-                <li><a href="#menu" class="text-gray-700 hover:text-red-500">Menu</a></li>
-                <li><a href="#contact" class="text-gray-700 hover:text-red-500">Contact</a></li>
-                <li><a href="{% url 'event_list' %}" class="text-gray-700 hover:text-red-500">My Events</a></li>
-                <li><a href="{% url 'register' %}" class="text-gray-700 hover:text-red-500">Sign Up</a></li>
-            </ul>
-            <a href="{% url 'order_menu' %}" class="hidden md:block bg-red-600 text-white px-4 py-2 rounded-md">Order Now</a>
-            <p href="#" class="text-gray-700 hover:text-red-500"><i class="fa-solid fa-user"></i> &nbsp {{ name }}</p>
-        </div>
-    </nav>
+{% block title %}Home - My Website{% endblock %}
 
+{% block content %}
     <!-- Hero Section -->
-    <header class="relative bg-cover bg-center h-[500px] flex items-center justify-center text-center text-white" style="background-image: url('https://source.unsplash.com/1600x900/?food,catering');">
-        <div class="bg-black bg-opacity-50 p-8 rounded-lg">
-            <h1 class="text-4xl md:text-6xl font-bold">Delicious Catering Services</h1>
-            <p class="mt-4 text-lg">Delivering fresh and tasty food for every occasion</p>
-            <a href="{% url 'book_event' %}" class="mt-6 inline-block bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Book Event</a>
+    <section class="bg-blue-900 text-white py-20">
+        <div class="container mx-auto text-center px-6">
+            <h1 class="text-5xl font-bold mb-4">Welcome to My Website</h1>
+            <p class="text-xl mb-6">Your go-to platform for event bookings and more!</p>
+            <a href="{% url 'book_event' %}" class="bg-red-600 text-white px-6 py-3 rounded-md text-lg hover:bg-red-700 transition">Create Events</a>
         </div>
-    </header>
+    </section>
 
-    <!-- Featured Menu Section -->
-    <section id="menu" class="py-12 bg-gray-50">
-        <div class="container mx-auto text-center">
-            <h2 class="text-3xl font-bold text-gray-800">Our Special Menu</h2>
-            <p class="text-gray-600 mt-2">Curated dishes made with love</p>
-            
-            <div class="grid md:grid-cols-3 gap-8 mt-8 px-4">
-                {% for item in menu %}
-                <div class="bg-white p-6 shadow-md rounded-lg">
-                    <img src="{{ item.image.url }}" alt="Dish" class="w-full h-40 object-cover rounded-md">
-                    <h3 class="text-xl font-semibold mt-4">{{ item.name }}</h3>
-                    <p class="text-gray-600 mt-2">{{ item.description }}</p>
-                    <span class="text-red-600 font-bold mt-2 block">Rs {{ item.price }}</span>
+    <!-- Features Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto text-center px-6">
+            <h2 class="text-4xl font-bold text-gray-800 mb-10">Why Choose Us?</h2>
+            <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="feature-card p-6 bg-white shadow-lg rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Easy Booking</h3>
+                    <p class="text-gray-600">Book your events in just a few clicks. It's fast and simple.</p>
                 </div>
-                {% endfor %}
+                <div class="feature-card p-6 bg-white shadow-lg rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Affordable Prices</h3>
+                    <p class="text-gray-600">We offer competitive pricing for all event types. No hidden charges.</p>
+                </div>
+                <div class="feature-card p-6 bg-white shadow-lg rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Premium Services</h3>
+                    <p class="text-gray-600">Enjoy premium catering and event management services for your special day.</p>
+                </div>
             </div>
-            <a href="{% url 'order_menu' %}" class="mt-6 inline-block bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">View Full Menu</a>
         </div>
     </section>
 
-    <!-- About Us Section -->
-    <section id="about" class="py-12 bg-white">
-        <div class="container mx-auto text-center">
-            <h2 class="text-3xl font-bold text-gray-800">About Us</h2>
-            <p class="text-gray-600 mt-2 max-w-3xl mx-auto">
-                We are a passionate catering company, bringing you fresh and delicious food with the highest quality ingredients. Whether it's a wedding, a corporate event, or a private party, we have the perfect menu for you.
-            </p>
+    <!-- Upcoming Events Section -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto text-center px-6">
+        <h2 class="text-4xl font-bold text-gray-800 mb-10">Upcoming Events</h2>
+        
+        <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {% for event in events %}
+            <div class="event-card bg-white shadow-xl rounded-lg overflow-hidden transform hover:scale-105 transition duration-300">
+                
+                <div class="p-6">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">{{ event.get_event_type_display }}</h3>
+                    <p class="text-gray-600"><strong>Date:</strong> {{ event.event_date|date:"F d, Y" }}</p>
+                    <p class="text-gray-600"><strong>Venue:</strong> {{ event.venue }}</p>
+                    <p class="text-gray-600"><strong>Guests:</strong> {{ event.guest_count }}</p>
+                    <p class="text-gray-600"><strong>Total Price:</strong> ₹{{ event.total_price }}</p>
+                    
+                    <a href="/events/{{ event.id }}/" class="inline-block mt-4 px-6 py-2 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition duration-300">
+                        View Details
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-12 bg-gray-50">
-        <div class="container mx-auto text-center">
-            <h2 class="text-3xl font-bold text-gray-800">Contact Us</h2>
-            <p class="text-gray-600 mt-2">Get in touch for bookings and inquiries</p>
-            <form class="mt-6 max-w-lg mx-auto">
-                <input type="text" placeholder="Your Name" class="w-full p-3 border border-gray-300 rounded-md mb-3">
-                <input type="email" placeholder="Your Email" class="w-full p-3 border border-gray-300 rounded-md mb-3">
-                <textarea placeholder="Your Message" class="w-full p-3 border border-gray-300 rounded-md mb-3"></textarea>
-                <button class="bg-red-600 text-white px-6 py-3 rounded-md">Send Message</button>
-            </form>
+
+    <h3 class="text-2xl font-semibold text-gray-800 mb-6">Our Menu</h3>
+    <div class="flex justify-center mb-6">
+        <form action="/" method="get" class="flex items-center bg-white p-2 rounded-lg shadow-lg w-full max-w-lg">
+            <input type="text" name="search" placeholder="Search for menu items..." value="{{ search_query }}" class="w-full p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button type="submit" class="bg-blue-600 text-white p-2 rounded-r-lg hover:bg-blue-700">
+                Search
+            </button>
+        </form>
+    </div>
+
+    
+<!-- Menu Items Display -->
+<h3 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Our Menu</h3>
+
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for menu_item in menu %}
+    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+        <img src="{{ menu_item.image.url }}" alt="{{ menu_item.name }}" class="w-full h-48 object-cover rounded-t-md mb-4">
+        <h4 class="text-xl font-semibold text-gray-800">{{ menu_item.name }}</h4>
+        <p class="text-gray-600 mt-2">{{ menu_item.description }}</p>
+        <p class="text-gray-600 mt-2"><strong>Price:</strong> ₹{{ menu_item.price }}</p>
+        <p class="text-gray-600 mt-2"><strong>Category:</strong> {{ menu_item.get_category_display }}</p>
+    </div>
+    {% empty %}
+    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+        <img src="{{ menu_item.image.url }}" alt="{{ menu_item.name }}" class="w-full h-48 object-cover rounded-t-md mb-4">
+        <h4 class="text-xl font-semibold text-gray-800">{{ menu_item.name }}</h4>
+        <p class="text-gray-600 mt-2">{{ menu_item.description }}</p>
+        <p class="text-gray-600 mt-2"><strong>Price:</strong> ₹{{ menu_item.price }}</p>
+        <p class="text-gray-600 mt-2"><strong>Category:</strong> {{ menu_item.get_category_display }}</p>
+    </div>
+    {% endfor %}
+</div>
+<br>
+    <!-- Footer Section -->
+    <footer class="bg-gray-900 text-white py-6">
+        <div class="container mx-auto text-center px-6">
+            <p class="text-lg">&copy; 2025 My Website. All rights reserved.</p>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white text-center py-6">
-        <p>&copy; 2025 CateringPro. All Rights Reserved.</p>
     </footer>
-
-</body>
-</html>
+{% endblock %}

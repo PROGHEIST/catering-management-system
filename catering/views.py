@@ -4,23 +4,33 @@ from .forms import UserRegistrationForm, UserLoginForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import MenuForm, EventBookingForm
 from django.contrib.admin.views.decorators import staff_member_required
-from .models import Menu, Order, EventBooking
+from .models import Menu, EventBooking
 from django.http import HttpResponseForbidden
+from django.contrib import messages
+import razorpay
+from django.http import JsonResponse
+
+
+
+
 
 
 def Homepage(request):
     menu = Menu.objects.all().order_by('-price')[:4]
+    search_query = request.GET.get('search', '')  # Get the search query from the URL parameter
+    if search_query:
+        menu = Menu.objects.filter(name__icontains=search_query) | Menu.objects.filter(description__icontains=search_query)
+    else:
+        menu = Menu.objects.all() 
+    events = EventBooking.objects.all()[:3]  # Fetch the latest 3 events
     context = {
         'name': request.user.username,
-        'menu': menu
+        'menu': menu,
+        'events': events
     }
     return render(request, 'home.html', context)
 
 
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from django.contrib import messages
-from .forms import UserRegistrationForm
 
 def register_view(request):
     if request.method == "POST":
@@ -42,6 +52,23 @@ def register_view(request):
     return render(request, "auth/register.html", {"form": form})
 
 
+def verify_razorpay_payment(request, event_id):
+    event = get_object_or_404(EventBooking, id=event_id)
+    payment_id = request.GET.get('payment_id')
+    order_id = request.GET.get('order_id')
+
+    # Initialize Razorpay client
+    client = razorpay.Client(auth=("your_razorpay_key_id", "your_razorpay_key_secret"))
+
+    # Verify payment
+    payment = client.payment.fetch(payment_id)
+    if payment['status'] == 'captured':
+        event.payment_status = 'completed'
+        event.save()
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'failed'})
+
 
 
 def login_view(request):
@@ -61,24 +88,54 @@ def logout_view(request):
 
 
 
+# Razorpay Client Setup
+razorpay_client = razorpay.Client(auth=("RAZORPAY_KEY_ID", "RAZORPAY_KEY_SECRET"))
+
 @login_required
 def book_event(request):
     if request.method == "POST":
         form = EventBookingForm(request.POST)
         if form.is_valid():
-            event = form.save(commit=False)
+            event = form.save(commit=False)  # Save the instance first
             event.customer = request.user  # Assign the logged-in user
-            event.save()
-            return redirect('event_list')  # Redirect to event list page
+            event.save()  # Save the event before adding menu items
+            form.save_m2m()  # Save ManyToMany field (menu_items)
+            return redirect('event_list')  # Redirect to success page
     else:
         form = EventBookingForm()
-    
+
     return render(request, 'event_booking.html', {'form': form})
+
 
 @login_required
 def event_list(request):
     events = EventBooking.objects.filter(customer=request.user)
     return render(request, 'event_list.html', {'events': events})
+
+
+from django.shortcuts import render, redirect
+from .models import EventBooking
+
+def cancel_event(request, event_id):
+    # Get the event based on the ID
+    event = EventBooking.objects.get(id=event_id)
+
+    # Check if the user is authorized to cancel the event (optional)
+    if event.status != 'completed':  # You can also add additional logic here for authorization
+        event.status = 'cancelled'  # Update the status to 'cancelled'
+        event.save()
+        # Optionally, add a success message
+        messages.success(request, "Event has been cancelled successfully.")
+
+    return redirect('event_list')  # Redirect back to the event list page
+
+
+def event_details(request, event_id):
+    # Fetch the event based on the event_id
+    event = get_object_or_404(EventBooking, id=event_id)
+
+    # Render the event details page
+    return render(request, 'event_details.html', {'event': event})
 
 
 @login_required
