@@ -1,10 +1,13 @@
 from django.urls import path
-from .views import Homepage, register_view, login_view, logout_view, dashboard, menu_list_view, add_menu_item_view, edit_menu_item_view, delete_menu_item_view, order_menu_view, place_order_view, order_confirmation_view, order_history_view, admin_dashboard_view,book_event, event_list, cancel_event, event_details
+from .views import Homepage, register_view, login_view, logout_view, dashboard, menu_list_view, add_menu_item_view, edit_menu_item_view, delete_menu_item_view, order_menu_view, place_order_view, order_confirmation_view, order_history_view, admin_dashboard_view,book_event, event_list, cancel_event, event_details, menus, menu_item, related_menu_item
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('', Homepage, name='home'),
+    path('menus/', menus, name='menus'),
+    path('menus/<int:menu_item>', menu_item, name='menu-details'),
+    path('menus/<int:related_menu_item>', related_menu_item, name='related_menu-details'),
     path('dashboard/', dashboard, name='dashboard'),
     path('admin-dashboard/', admin_dashboard_view, name='admin_dashboard'),
     path('register/', register_view, name='register'),

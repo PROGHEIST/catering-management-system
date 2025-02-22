@@ -17,12 +17,7 @@ from django.http import JsonResponse
 
 def Homepage(request):
     menu = Menu.objects.all().order_by('-price')[:4]
-    search_query = request.GET.get('search', '')  # Get the search query from the URL parameter
-    if search_query:
-        menu = Menu.objects.filter(name__icontains=search_query) | Menu.objects.filter(description__icontains=search_query)
-    else:
-        menu = Menu.objects.all() 
-    events = EventBooking.objects.all()[:3]  # Fetch the latest 3 events
+    events = EventBooking.objects.all().order_by('event_date')[:3]  # Fetch the latest 3 events
     context = {
         'name': request.user.username,
         'menu': menu,
@@ -30,6 +25,31 @@ def Homepage(request):
     }
     return render(request, 'home.html', context)
 
+
+def menus(request):
+    search_query = request.GET.get('search', '') 
+    if search_query:
+        menu = Menu.objects.filter(name__icontains=search_query) | Menu.objects.filter(description__icontains=search_query)
+    else:
+        menu = Menu.objects.all() 
+
+    context = {
+        'menu': menu,
+        'name': request.user.username
+    }
+    return render(request, 'menus.html', context)
+
+def menu_item(request, menu_item):
+    menu = Menu.objects.get(id=menu_item)
+    related_menu = Menu.objects.filter(category=menu.category).exclude(id=menu.id)
+    context = { 'menu': menu, 'related_menu': related_menu, 'name': request.user.username }
+    return render(request, 'menu_item.html', context)
+
+def related_menu_item(request, related_menu_item):
+    menu = Menu.objects.get(id=related_menu_item)
+    related_menu = Menu.objects.filter(category=menu.category).exclude(id=menu.id)
+    context = { 'menu': menu, 'related_menu': related_menu, 'name': request.user.username }
+    return render(request, 'menu_item.html', context)
 
 
 def register_view(request):
@@ -110,24 +130,23 @@ def book_event(request):
 @login_required
 def event_list(request):
     events = EventBooking.objects.filter(customer=request.user)
-    return render(request, 'event_list.html', {'events': events})
+    return render(request, 'event_list.html', {'events': events, 'name': request.user.username})
 
 
 from django.shortcuts import render, redirect
 from .models import EventBooking
 
 def cancel_event(request, event_id):
-    # Get the event based on the ID
+
     event = EventBooking.objects.get(id=event_id)
 
-    # Check if the user is authorized to cancel the event (optional)
-    if event.status != 'completed':  # You can also add additional logic here for authorization
-        event.status = 'cancelled'  # Update the status to 'cancelled'
+    if event.status != 'completed': 
+        event.status = 'cancelled'  
         event.save()
-        # Optionally, add a success message
+
         messages.success(request, "Event has been cancelled successfully.")
 
-    return redirect('event_list')  # Redirect back to the event list page
+    return redirect('event_list')  
 
 
 def event_details(request, event_id):
@@ -135,7 +154,7 @@ def event_details(request, event_id):
     event = get_object_or_404(EventBooking, id=event_id)
 
     # Render the event details page
-    return render(request, 'event_details.html', {'event': event})
+    return render(request, 'event_details.html', {'event': event, 'name': request.user.username,})
 
 
 @login_required
