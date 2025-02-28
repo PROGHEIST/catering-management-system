@@ -1,55 +1,288 @@
-.dashboard-container {
-    display: flex;
-}
+@import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&family=Lavishly+Yours&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-.sidebar {
-    width: 250px;
-    background: #333;
-    color: #fff;
-    padding: 20px;
-}
 
-.sidebar ul {
-    list-style: none;
+/* font-family: "Montserrat", serif;
+font-family: "Lavishly Yours", serif;
+font-family: "Pacifico", serif;
+ font-family: "Roboto", serif;
+font-family: "DynaPuff", serif; */
+
+body{
+    background-color: black;
+    font-family: 'Roboto', sans-serif;
     padding: 0;
-}
-
-.sidebar ul li {
-    margin-bottom: 15px;
-}
-
-.main-content {
-    flex-grow: 1;
-    padding: 20px;
-}
-
-.top-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.greeting h3 {
     margin: 0;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
 }
 
-.user-profile img {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+nav{
+    background-color: transparent;
+    color: black;
+}
+#logo{
+    color: white;
 }
 
-.stats-cards {
-    display: flex;
-    gap: 20px;
-    margin-top: 30px;
+#nav-links{
+    color: rgb(255, 255, 255);
 }
 
-.card {
-    background: #f4f4f4;
-    padding: 20px;
+#nav-links:hover{
+    background-color: rgb(65, 65, 65);
+}
+.LogoutPanel{
+    position: absolute;
+    top: 20px;
+    right: 0px;
+    border-radius: 10px;
+    background-color: white;
     width: 200px;
+    height: 100px;
+    transform: translateY(-120%);
+}
+.LogoutPanel .fa-close{
+    position: relative;
+    top: 10px;
+    left: 170px;
+}
+.LogoutPanel a{
+    position: relative;
+    top: 40px;
+    left: 40px;
+    color: red;
+    font-weight: 600;
+    font-family: "Roboto", serif;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+.LogoutPanel a:hover{
+    
+    background-color: rgb(245, 245, 245);
+}
+#mainContainer{
+    display: flex;
+    flex-direction: row;
+background-color: black;
+}
+.main-imageContainer{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+}
+.main-image{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    border-radius: 0px 10px 0px 0px;
+}
+#main-head{
+    font-family: "Pacifico", serif;
+    color: white;
+    font-size: 50px;
+    margin: 0;
+    padding: 0;
     text-align: center;
+    margin-bottom: 10px;
+}
+#main-desc{
+    font-family: "DynaPuff", serif;
+    color: white;
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    margin-bottom: 20px;   
+}
+.main-button{
+    font-family: "Roboto", serif;
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+    font: 600;
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: rgb(21, 255, 0);
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.5s all ease-in-out;
+}
+.main-button:hover{
+    background-color: yellow;
+}
+
+
+#headline{
+    display: flex;
+    align-items: center;
+    background-color: rgb(21, 255, 0);
+    width: 100%;
+    height: 100px;
+    font-size: 40px;
+}
+#headline h1{
+    position: relative;
+    width: 100%;
+    font-family: "Pacifico", serif;
+    color: rgb(255, 255, 255);
+    transform: translateX(120%);
+}
+
+.whyContainer{
+    background-color: rgb(7, 7, 44);
+    color: white;
+}
+.whyContainer h2{
+    font-family: "Pacifico", serif;
+}
+.feature-card{
+    background-color: white;
+    font-family: "Roboto", serif;
+    color: black;
+    cursor: pointer;
+}
+.feature-card h3{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.BestContainer{
+    width: 300vw;
+    height: 100%;
+    font-size: 300px;
+    color: white;
+    background-image: url('https://images.unsplash.com/photo-1527529482837-4698179dc6ce?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+    background-size: cover;
+    background-position: center;
+    
+}
+.BestContainer h1{
+    
+    transform: translateX(60%);
+}
+
+
+.BlackContainer {
+    background: #000000;
+    padding: 40px;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+.imageContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.imageContainer img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.imageContainer img:hover {
+    transform: scale(1.05);
+}
+
+.description {
+    font-size: 20px;
+    line-height: 1.6;
+}
+
+.hero {
+    background: url('https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+footer{
+    background-color: rgb(41, 41, 41);
+}
+/* About Section */
+.about-container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.about-container h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: #fffcfc;
+}
+
+.about-container p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #ffffff;
+}
+
+/* Team Section */
+.team {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.team-member {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+}
+
+.team-member img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.team-member h3 {
+    font-size: 1.2rem;
+    margin: 5px 0;
+    color: #000000;
+}
+
+.team-member p {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero {
+        font-size: 1.5rem;
+        height: 40vh;
+    }
+    .about-container h2 {
+        font-size: 2rem;
+    }
 }

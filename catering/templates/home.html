@@ -1,68 +1,65 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Home - My Website{% endblock %}
 
 {% block content %}
-    <!-- Hero Section -->
-    <section class="bg-blue-900 text-white py-20">
-        <div class="container mx-auto text-center px-6">
-            <h1 class="text-5xl font-bold mb-4">Welcome to My Website</h1>
-            <p class="text-xl mb-6">Your go-to platform for event bookings and more!</p>
-            <a href="{% url 'book_event' %}" class="bg-red-600 text-white px-6 py-3 rounded-md text-lg hover:bg-red-700 transition">Create Events</a>
+    
+    <section id="mainContainer" class="bg-cover bg-center h-screen flex items-center justify-center text-center text-white">
+        <div class="main-imageContainer">
+            <img class="main-image" src="{% static '/images/burger.jpg' %}" alt="">
+        </div>
+        <div id="main-stagger" class="z-10">
+            <h1 id="main-head">Unforgettable Events, Seamless Planning</h1>
+            <p id="main-desc">From intimate gatherings to grand celebrations, we bring your vision to life with effortless event planning and execution.</p>
+            <a href="{% url 'book_event' %}" class="main-button">Book Event</a>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="py-16 bg-gray-100">
-        <div class="container mx-auto text-center px-6">
-            <h2 class="text-4xl font-bold text-gray-800 mb-10">Why Choose Us?</h2>
-            <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-12">
-                <div class="feature-card p-6 bg-white shadow-lg rounded-lg">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Easy Booking</h3>
-                    <p class="text-gray-600">Book your events in just a few clicks. It's fast and simple.</p>
-                </div>
-                <div class="feature-card p-6 bg-white shadow-lg rounded-lg">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Affordable Prices</h3>
-                    <p class="text-gray-600">We offer competitive pricing for all event types. No hidden charges.</p>
-                </div>
-                <div class="feature-card p-6 bg-white shadow-lg rounded-lg">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Premium Services</h3>
-                    <p class="text-gray-600">Enjoy premium catering and event management services for your special day.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Upcoming Events Section -->
-<section class="py-16 bg-gray-50">
-    <div class="container mx-auto text-center px-6">
-        <h2 class="text-4xl font-bold text-gray-800 mb-10">Your Upcoming Events</h2>
-        
-        <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {% for event in events %}
-            <div class="event-card bg-white shadow-xl rounded-lg overflow-hidden transform hover:scale-105 transition duration-300">
-                
-                <div class="p-6">
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">{{ event.get_event_type_display }}</h3>
-                    <p class="text-gray-600"><strong>Date:</strong> {{ event.event_date|date:"F d, Y" }}</p>
-                    <p class="text-gray-600"><strong>Venue:</strong> {{ event.venue }}</p>
-                    <p class="text-gray-600"><strong>Guests:</strong> {{ event.guest_count }}</p>
-                    <p class="text-gray-600"><strong>Total Price:</strong> ₹{{ event.total_price }}</p>
-                    
-                    <a href="/events/{{ event.id }}/" class="inline-block mt-4 px-6 py-2 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition duration-300">
-                        View Details
-                    </a>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+    <div class="conatiner" id="headline">
+       <h1><i class="fa-solid fa-bowl-food"></i> Best Offers <i class="fa-solid fa-bowl-food"></i></h1> 
+       <h1><i class="fa-solid fa-bowl-food"></i> Best Deals <i class="fa-solid fa-bowl-food"></i></h1> 
+       <h1><i class="fa-solid fa-bowl-food"></i> Only Here <i class="fa-solid fa-bowl-food"></i></h1> 
     </div>
-</section>
-
-    <!-- Footer Section -->
-    <footer class="bg-gray-900 text-white py-6">
+    <!-- Features Section -->
+    <section class="py-20 whyContainer">
         <div class="container mx-auto text-center px-6">
-            <p class="text-lg">&copy; 2025 My Website. All rights reserved.</p>
+            <h2 class="text-5xl font-bold mb-12">Why Choose Us?</h2>
+            <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="feature-card p-8 shadow-lg rounded-lg">
+                    <i class="fas fa-calendar-check text-5xl text-red-500 mb-4"></i>
+                    <h3 class="mb-4">Easy Booking</h3>
+                    <p>Book your events in just a few clicks. It's fast and simple.</p>
+                </div>
+                <div class="feature-card p-8 shadow-lg rounded-lg ">
+                    <i class="fas fa-tags text-5xl text-blue-500 mb-4"></i>
+                    <h3 class="mb-4">Affordable Prices</h3>
+                    <p >We offer competitive pricing for all event types. No hidden charges.</p>
+                </div>
+                <div class="feature-card p-8 shadow-lg rounded-lg ">
+                    <i class="fas fa-star text-5xl text-yellow-500 mb-4"></i>
+                    <h3 class="mb-4">Premium Services</h3>
+                    <p>Enjoy top-tier catering and event management services for your special day.</p>
+                </div>
+            </div>
         </div>
-    </footer>
+    </section>
+
+
+    <div class="BestContainer">
+        <h1>EXPERIENCED WORKERS</h1>
+    </div>
+
+    <div class="BlackContainer">
+    <div class="imageContainer">
+        <img src="https://plus.unsplash.com/premium_photo-1687697860831-edaf70e279dd?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Catering Image 1">
+        <img src="https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Catering Image 2">
+        <img src="https://images.unsplash.com/photo-1543353071-10c8ba85a904?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Catering Image 3">
+        <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Catering Image 4">
+    </div>
+    <div class="description">
+        <h2>Meet Our Catering Team</h2>
+        <p>Our dedicated catering team is the heart and soul of every successful event, consistently delivering exceptional food and service with a smile. They bring a passion for culinary excellence to every plate, ensuring each gathering is not just a meal but a memorable experience. From expertly preparing diverse menus to gracefully serving guests with attentiveness, our catering staff are true professionals who take pride in making every occasion special.</p>
+    </div>
+</div>
+    
 {% endblock %}

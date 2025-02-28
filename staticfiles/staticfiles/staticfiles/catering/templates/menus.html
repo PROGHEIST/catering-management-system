@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - My Website{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    {% for cat in category %}
+    <a href="">{{cat.category}}</a>
+    {% endfor  %}
+</div>
+
+
+<div class="flex justify-center mb-6">
+    <form action="{% url 'menus' %}" method="get" class="flex items-center bg-white p-2 rounded-lg shadow-lg w-full max-w-lg">
+        <input type="text" name="search" placeholder="Search for menu items..." value="{{ search_query }}" class="w-full p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button type="submit" class="bg-blue-600 text-white p-2 rounded-r-lg hover:bg-blue-700">
+            Search
+        </button>
+    </form>
+</div>
+
+
+<!-- Menu Items Display -->
+<h3 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Our Menu</h3>
+
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+{% for menu_item in menu %}
+<div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+    <a href={% url 'menu-details' menu_item.id %}>
+        <img src="{{ menu_item.image.url }}" alt="{{ menu_item.name }}" class="w-full h-48 object-cover rounded-t-md mb-4">
+    <h4 class="text-xl font-semibold text-gray-800">{{ menu_item.name }}</h4>
+    <p class="text-gray-600 mt-2">{{ menu_item.description }}</p>
+    <p class="text-gray-600 mt-2"><strong>Price:</strong> ₹{{ menu_item.price }} /Guest</p>
+    <p class="text-gray-600 mt-2"><strong>Category:</strong> {{ menu_item.get_category_display }}</p>
+    </a>
+</div>
+{% empty %}
+<div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+    <img src="{{ menu_item.image.url }}" alt="{{ menu_item.name }}" class="w-full h-48 object-cover rounded-t-md mb-4">
+    <h4 class="text-xl font-semibold text-gray-800">{{ menu_item.name }}</h4>
+    <p class="text-gray-600 mt-2">{{ menu_item.description }}</p>
+    <p class="text-gray-600 mt-2"><strong>Price:</strong> ₹{{ menu_item.price }}/Guest</p>
+    <p class="text-gray-600 mt-2"><strong>Category:</strong> {{ menu_item.get_category_display }}</p>
+</div>
+{% endfor %}
+</div>
+
+
+
+{% endblock %}

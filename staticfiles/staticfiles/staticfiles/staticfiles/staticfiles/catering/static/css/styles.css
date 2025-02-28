@@ -1,0 +1,32 @@
+body{
+    background-color: black;
+    font-family: 'Roboto', sans-serif;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    width: 100%;
+}
+
+nav{
+    background-color: transparent;
+    color: black;
+}
+#logo{
+    color: white;
+}
+
+#nav-links{
+    color: rgb(255, 255, 255);
+}
+
+#nav-links:hover{
+    background-color: rgb(65, 65, 65);
+}
+
+#mainContainer{
+background-color: black;
+}
+.main-image{
+    height: 500px;
+    width: 500px;
+}

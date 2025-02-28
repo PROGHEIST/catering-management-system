@@ -1,0 +1,18 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+    <h2 class="text-2xl font-bold text-gray-800">Your Dashboard</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+        <!-- Orders Summary Card -->
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+            <h3 class="text-xl font-semibold text-gray-800">Recent Orders</h3>
+            <p class="text-gray-500 mt-2">You have 3 pending orders.</p>
+            <a href="{% url 'order_history' %}" class="text-indigo-500 hover:underline">View Orders</a>
+        </div>
+        <!-- Place New Order Card -->
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+            <h3 class="text-xl font-semibold text-gray-800">Place New Order</h3>
+            <a href="{% url 'order_menu' %}" class="text-indigo-500 hover:underline">Order Now</a>
+        </div>
+    </div>
+{% endblock %}

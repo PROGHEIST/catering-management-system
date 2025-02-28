@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - My Website{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center min-h-screen bg-gray-100 px-4">
+    <div class="bg-white shadow-lg rounded-lg p-6 max-w-lg w-full">
+        <div class="flex flex-col items-center text-center">
+            <img class="w-48 h-48 rounded-lg object-cover mb-4 shadow-md" src="{{ menu.image.url }}" alt="{{ menu.name }}">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">{{ menu.name }}</h2>
+            <h3 class="text-lg font-semibold text-gray-600 mb-2">{{ menu.category }}</h3>
+            <p class="text-gray-700 text-base mb-4">{{ menu.description }}</p>
+            <p class="text-xl font-semibold text-gray-900">Price: ₹{{ menu.price }} /Guest</p>
+        </div>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Related Menu Items</h2>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for related_menu_item in related_menu %}
+
+        <div class="bg-white shadow-md rounded-lg overflow-hidden p-4">
+            <img class="w-full h-40 object-cover rounded-md mb-4" src="{{ related_menu_item.image.url }}" alt="{{ related_menu_item.name }}">
+            <h3 class="text-lg font-semibold text-gray-800">{{ related_menu_item.name }}</h3>
+            <p class="text-sm text-gray-600">{{ related_menu_item.category }}</p>
+            <p class="text-gray-700 mt-2 text-sm truncate">{{ related_menu_item.description }}</p>
+            <p class="text-lg font-bold text-gray-900 mt-2">₹{{ related_menu_item.price }} /Guest</p>
+            <a href="{% url 'related_menu-details' related_menu_item.id %}" class="block text-center mt-4 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200">
+                View Details
+            </a>
+        </div>
+        
+
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}

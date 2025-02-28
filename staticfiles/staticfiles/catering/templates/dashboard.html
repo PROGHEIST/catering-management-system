@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catering Dashboard</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body class="font-sans bg-gray-100">
+    <!-- Sidebar -->
+    <div class="flex h-screen">
+        <div class="w-1/5 bg-indigo-700 text-white p-5">
+            <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
+            <ul>
+                <li><a href="{% url 'menu_list' %}" class="block py-2 px-4 rounded hover:bg-indigo-600">Menu</a></li>
+                <li><a href="{% url 'order_menu' %}" class="block py-2 px-4 rounded hover:bg-indigo-600">Place Order</a></li>
+                <li><a href="{% url 'order_history' %}" class="block py-2 px-4 rounded hover:bg-indigo-600">Order History</a></li>
+                {% if user.is_staff %}
+                <li><a href="{% url 'admin_dashboard' %}" class="block py-2 px-4 rounded hover:bg-indigo-600">Admin Dashboard</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <!-- Main Content -->
+        <div class="flex-1 p-6">
+            <h1 class="text-3xl font-semibold text-gray-800 mb-6">Welcome, {{ user.username }}!</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dashboard Cards -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-semibold text-gray-800">Total Orders</h3>
+                    <p class="text-gray-500 mt-2">150</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-semibold text-gray-800">Pending Orders</h3>
+                    <p class="text-gray-500 mt-2">5</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-semibold text-gray-800">Revenue</h3>
+                    <p class="text-gray-500 mt-2">$3,500</p>
+                </div>
+            </div>
+
+            
+            <div class="mt-10">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

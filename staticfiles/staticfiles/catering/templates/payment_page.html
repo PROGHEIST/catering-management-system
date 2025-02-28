@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Payment for {{ event.get_event_type_display }}{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg text-center">
+    <h2 class="text-2xl font-bold mb-4">Complete Your Payment</h2>
+    <p class="text-lg text-gray-700">Total Amount: <strong>₹{{ event.total_price }}</strong></p>
+    
+    <button id="rzp-button" class="bg-green-600 text-white px-6 py-2 rounded-lg mt-4 hover:bg-green-700 transition duration-200">
+        Pay Now
+    </button>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        "key": "{{ razorpay_key }}",
+        "amount": "{{ amount }}",
+        "currency": "INR",
+        "name": "Event Booking",
+        "description": "Payment for {{ event.get_event_type_display }}",
+        "order_id": "{{ order_id }}",
+        "handler": function(response) {
+            fetch("{% url 'verify_razorpay_payment' event.id %}?payment_id=" + response.razorpay_payment_id + "&order_id={{ order_id }}")
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert("Payment successful!");
+                        window.location.href = "{% url 'event_list' %}";
+                    } else {
+                        alert("Payment failed. Try again.");
+                    }
+                });
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+
+    var rzp = new Razorpay(options);
+    document.getElementById("rzp-button").onclick = function(e) {
+        rzp.open();
+        e.preventDefault();
+    };
+</script>
+{% endblock %}

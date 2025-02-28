@@ -1,0 +1,17 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+    <h2 class="text-2xl font-bold text-gray-800">Admin Dashboard</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+        <!-- New Menu Item Card -->
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+            <h3 class="text-xl font-semibold text-gray-800">Add New Menu Item</h3>
+            <a href="{% url 'add_menu_item' %}" class="text-indigo-500 hover:underline">Click to Add</a>
+        </div>
+        <!-- Orders to Process Card -->
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+            <h3 class="text-xl font-semibold text-gray-800">Orders to Process</h3>
+            <p class="text-gray-500 mt-2">5</p>
+        </div>
+    </div>
+{% endblock %}
