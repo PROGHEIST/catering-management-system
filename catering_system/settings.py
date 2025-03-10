@@ -84,7 +84,7 @@ DATABASES = {
 
 
 AUTH_USER_MODEL = 'catering.User'
-LOGIN_URL = 'accounts:login' 
+LOGIN_URL = 'login' 
 
 
 # Password validation

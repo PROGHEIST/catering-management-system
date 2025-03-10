@@ -10,7 +10,7 @@
     {% endfor  %}
 </div>
 
-
+<div class="mx-auto p-6 bg-gray-100">
 <div class="flex justify-center mb-6">
     <form action="{% url 'menus' %}" method="get" class="flex items-center bg-white p-2 rounded-lg shadow-lg w-full max-w-lg">
         <input type="text" name="search" placeholder="Search for menu items..." value="{{ search_query }}" class="w-full p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -46,6 +46,6 @@
 {% endfor %}
 </div>
 
-
+</div>
 
 {% endblock %}

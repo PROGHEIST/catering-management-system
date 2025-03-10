@@ -39,7 +39,10 @@
                     <!-- Pay Now Button (Only for Approved and Pending Payment) -->
                     {% if event.payment_status == 'completed' %}
                     <p class="text-green-600 font-semibold">Payment Completed</p>
-                {% elif event.status == 'approved' %}
+                    {% elif event.status == 'cancelled' %}
+                    <p class="text-red-600 font-semibold">Your Event Is Cancelled</p>
+                {% elif event.status != 'approved' %}
+                {% elif event.status != 'cancelled' %}
                     <button onclick="payNow('{{ event.id }}', '{{ event.total_price }}')" 
                         class="bg-green-600 text-white px-4 py-2 rounded-md w-full hover:bg-green-700 transition duration-200">
                         Pay Now

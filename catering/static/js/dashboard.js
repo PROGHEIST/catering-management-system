@@ -127,5 +127,5 @@ tl2.to('#headline h1',{
 })
 
 
-var user = document.querySelector('.user-nav');
+
 

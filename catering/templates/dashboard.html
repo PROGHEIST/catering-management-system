@@ -58,7 +58,11 @@
                     <tbody>
                         {% for event in events %}
                         <tr class="text-center border-b">
-                            <td class="p-3 border">{{ event.get_event_type_display }}</td>
+                            <td class="p-3 border">
+                                <a class="text-blue-800 font-bold" href="{% url 'event_details' event.id %}">
+                                {{ event.get_event_type_display }}
+                            </a>
+                            </td>
                             <td class="p-3 border">{{ event.event_date|date:"M d, Y" }}</td>
                             <td class="p-3 border">{{ event.venue }}</td>
                             <td class="p-3 border">{{ event.guest_count }}</td>

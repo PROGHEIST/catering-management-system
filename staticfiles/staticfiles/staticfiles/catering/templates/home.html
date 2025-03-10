@@ -4,73 +4,54 @@
 
 {% block content %}
     
-    <section id="mainContainer" class="relative bg-cover bg-center h-screen flex items-center justify-center text-center text-white">
-        <div class="absolute inset-0 bg-black bg-opacity-60">
+    <section id="mainContainer" class="bg-cover bg-center h-screen flex items-center justify-center text-center text-white">
+        <div class="main-imageContainer">
             <img class="main-image" src="{% static '/images/burger.jpg' %}" alt="">
         </div>
-        <div class="relative z-10">
-            <h1 class="text-6xl font-extrabold mb-6 drop-shadow-lg">Unforgettable Events, Seamless Planning</h1>
-            <p class="text-xl mb-6 max-w-2xl mx-auto">From intimate gatherings to grand celebrations, we bring your vision to life with effortless event planning and execution.</p>
-            <a href="{% url 'book_event' %}" class="bg-red-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-red-600 transition shadow-lg">Start Planning</a>
+        <div id="main-stagger" class="z-10">
+            <h1 id="main-head">Unforgettable Events, Seamless Planning</h1>
+            <p id="main-desc">From intimate gatherings to grand celebrations, we bring your vision to life with effortless event planning and execution.</p>
+            <a href="{% url 'book_event' %}" class="main-button">Book Event</a>
         </div>
     </section>
 
+    <div class="conatiner" id="headline">
+       <h1><i class="fa-solid fa-bowl-food"></i> Best Offers <i class="fa-solid fa-bowl-food"></i></h1> 
+       <h1><i class="fa-solid fa-bowl-food"></i> Best Deals <i class="fa-solid fa-bowl-food"></i></h1> 
+       <h1><i class="fa-solid fa-bowl-food"></i> Only Here <i class="fa-solid fa-bowl-food"></i></h1> 
+    </div>
     <!-- Features Section -->
-    <section class="py-20 bg-blue-600 whyContainer">
+    <section class="py-20 whyContainer">
         <div class="container mx-auto text-center px-6">
             <h2 class="text-5xl font-bold mb-12">Why Choose Us?</h2>
             <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-12">
-                <div class="feature-card p-8 bg-white shadow-lg rounded-lg transition transform hover:-translate-y-2 hover:shadow-xl">
+                <div class="feature-card p-8 shadow-lg rounded-lg">
                     <i class="fas fa-calendar-check text-5xl text-red-500 mb-4"></i>
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Easy Booking</h3>
-                    <p class="text-gray-600">Book your events in just a few clicks. It's fast and simple.</p>
+                    <h3 class="mb-4">Easy Booking</h3>
+                    <p>Book your events in just a few clicks. It's fast and simple.</p>
                 </div>
-                <div class="feature-card p-8 bg-white shadow-lg rounded-lg transition transform hover:-translate-y-2 hover:shadow-xl">
+                <div class="feature-card p-8 shadow-lg rounded-lg ">
                     <i class="fas fa-tags text-5xl text-blue-500 mb-4"></i>
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Affordable Prices</h3>
-                    <p class="text-gray-600">We offer competitive pricing for all event types. No hidden charges.</p>
+                    <h3 class="mb-4">Affordable Prices</h3>
+                    <p >We offer competitive pricing for all event types. No hidden charges.</p>
                 </div>
-                <div class="feature-card p-8 bg-white shadow-lg rounded-lg transition transform hover:-translate-y-2 hover:shadow-xl">
+                <div class="feature-card p-8 shadow-lg rounded-lg ">
                     <i class="fas fa-star text-5xl text-yellow-500 mb-4"></i>
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Premium Services</h3>
-                    <p class="text-gray-600">Enjoy top-tier catering and event management services for your special day.</p>
+                    <h3 class="mb-4">Premium Services</h3>
+                    <p>Enjoy top-tier catering and event management services for your special day.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Upcoming Events Section -->
-    <section class="py-20 bg-gray-50">
-        <div class="container mx-auto text-center px-6">
-            <h2 class="text-5xl font-bold text-gray-800 mb-12">Your Upcoming Events</h2>
-            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                {% for event in events %}
-                <div class="event-card bg-white shadow-xl rounded-lg overflow-hidden transition transform hover:scale-105 duration-300">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">{{ event.get_event_type_display }}</h3>
-                        <p class="text-gray-600"><strong>Date:</strong> {{ event.event_date|date:"F d, Y" }}</p>
-                        <p class="text-gray-600"><strong>Venue:</strong> {{ event.venue }}</p>
-                        <p class="text-gray-600"><strong>Guests:</strong> {{ event.guest_count }}</p>
-                        <p class="text-gray-600"><strong>Total Price:</strong> ₹{{ event.total_price }}</p>
-                        <a href="/events/{{ event.id }}/" class="inline-block mt-4 px-6 py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition">View Details</a>
-                    </div>
-                </div>
-                {% empty %}
-                <p class="text-gray-500 text-lg">No upcoming events at the moment.</p>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
 
-    <!-- Footer Section -->
-    <footer class="bg-gray-900 text-white py-8">
-        <div class="container mx-auto text-center px-6">
-            <p class="text-lg">&copy; 2025 My Website. All rights reserved.</p>
-            <div class="mt-4">
-                <a href="#" class="text-gray-400 hover:text-white mx-2"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white mx-2"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-gray-400 hover:text-white mx-2"><i class="fab fa-instagram"></i></a>
-            </div>
-        </div>
-    </footer>
+    <div class="BestContainer">
+        <h1>EXPERIENCED WORKERS</h1>
+    </div>
+
+    <div class="BlackContainer">
+        <img src="" alt="">
+    </div>
+
+    
 {% endblock %}

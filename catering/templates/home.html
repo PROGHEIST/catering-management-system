@@ -1,19 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Home - My Website{% endblock %}
+{% block title %}Home - Catering{% endblock %}
 
 {% block content %}
     
-    <section id="mainContainer" class="bg-cover bg-center h-screen flex items-center justify-center text-center text-white">
-        <div class="main-imageContainer">
-            <img class="main-image" src="{% static '/images/burger.jpg' %}" alt="">
+        <video class="video-main" autoplay muted loop>
+            <source src="{% static '/images/bg_video.mp4' %}" type="video/mp4">
+          </video>
+        <div id="main-stagger">
+              <h1 id="main-head">Unforgettable Events, Seamless Planning</h1>
+              <p id="main-desc">From intimate gatherings to grand celebrations, we bring your vision to life with effortless event planning and execution.</p>
+              <a href="{% url 'book_event' %}" class="main-button">Book Event</a>
         </div>
-        <div id="main-stagger" class="z-10">
-            <h1 id="main-head">Unforgettable Events, Seamless Planning</h1>
-            <p id="main-desc">From intimate gatherings to grand celebrations, we bring your vision to life with effortless event planning and execution.</p>
-            <a href="{% url 'book_event' %}" class="main-button">Book Event</a>
-        </div>
-    </section>
 
     <div class="conatiner" id="headline">
        <h1><i class="fa-solid fa-bowl-food"></i> Best Offers <i class="fa-solid fa-bowl-food"></i></h1> 

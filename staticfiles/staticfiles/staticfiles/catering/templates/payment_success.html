@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto text-center py-10">
+    <h2 class="text-3xl font-semibold text-green-600">Payment Successful!</h2>
+    <p class="text-lg mt-4">Thank you for your payment for <strong>{{ event.event_name }}</strong>.</p>
+    <p><strong>Transaction ID:</strong> {{ event.razorpay_payment_id }}</p>
+    <p><strong>Order ID:</strong> {{ event.razorpay_order_id }}</p>
+    
+    <a href="{% url 'event_list' %}" class="mt-6 inline-block bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600">
+        Go to My Events
+    </a>
+</div>
+{% endblock %}

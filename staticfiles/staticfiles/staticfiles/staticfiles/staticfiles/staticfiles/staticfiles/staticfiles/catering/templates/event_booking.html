@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Event Booking{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Book an Event</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- Event Type -->
+        <div class="mb-6">
+            <label for="event_type" class="block text-gray-700 font-medium mb-2">Event Type</label>
+            <div class="relative">
+                {{ form.event_type }}
+            </div>
+        </div>
+
+        <!-- Event Date & Time -->
+        <div class="mb-6">
+            <label for="event_date" class="block text-gray-700 font-medium mb-2">Event Date & Time</label>
+            <div class="relative">
+                <input type="datetime-local" name="event_date" id="event_date" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+            </div>
+        </div>
+
+        <!-- Venue -->
+        <div class="mb-6">
+            <label for="venue" class="block text-gray-700 font-medium mb-2">Venue</label>
+            <div class="relative">
+                {{ form.venue }}
+            </div>
+        </div>
+
+        <!-- Guest Count -->
+        <div class="mb-6">
+            <label for="guest_count" class="block text-gray-700 font-medium mb-2">Guest Count</label>
+            <div class="relative">
+                {{ form.guest_count }}
+            </div>
+        </div>
+
+        <!-- Select Menu Items -->
+        <div class="mb-6">
+            <label for="menu_items" class="block text-gray-700 font-medium mb-2">Select Menu Items</label>
+            <div class="relative">
+                {{ form.menu_items }}
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="w-full bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-200 ease-in-out">
+            Submit
+        </button>
+    </form>
+</div>
+{% endblock %}

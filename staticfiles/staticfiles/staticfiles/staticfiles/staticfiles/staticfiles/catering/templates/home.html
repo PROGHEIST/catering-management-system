@@ -1,84 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catering Management System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home - My Website{% endblock %}
 
-    <!-- Navbar -->
-    <nav class="bg-white shadow-md">
-        <div class="container mx-auto flex justify-between items-center p-4">
-            <a href="#" class="text-2xl font-bold text-red-600">CateringPro</a>
-            <ul class="hidden md:flex space-x-6">
-                <li><a href="#" class="text-gray-700 hover:text-red-500">Home</a></li>
-                <li><a href="#menu" class="text-gray-700 hover:text-red-500">Menu</a></li>
-                <li><a href="#about" class="text-gray-700 hover:text-red-500">About</a></li>
-                <li><a href="#contact" class="text-gray-700 hover:text-red-500">Contact</a></li>
-            </ul>
-            <a href="{% url 'order_menu' %}" class="hidden md:block bg-red-600 text-white px-4 py-2 rounded-md">Order Now</a>
+{% block content %}
+    
+    <section id="mainContainer" class="relative bg-cover bg-center h-screen flex items-center justify-center text-center text-white">
+        <div class="absolute inset-0 bg-black bg-opacity-60">
+            <img class="main-image" src="{% static 'static/images/main.jpg' %}" alt="">
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="relative bg-cover bg-center h-[500px] flex items-center justify-center text-center text-white" style="background-image: url('https://source.unsplash.com/1600x900/?food,catering');">
-        <div class="bg-black bg-opacity-50 p-8 rounded-lg">
-            <h1 class="text-4xl md:text-6xl font-bold">Delicious Catering Services</h1>
-            <p class="mt-4 text-lg">Delivering fresh and tasty food for every occasion</p>
-            <a href="{% url 'order_menu' %}" class="mt-6 inline-block bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Explore Menu</a>
+        <div class="relative z-10">
+            <h1 class="text-6xl font-extrabold mb-6 drop-shadow-lg">Unforgettable Events, Seamless Planning</h1>
+            <p class="text-xl mb-6 max-w-2xl mx-auto">From intimate gatherings to grand celebrations, we bring your vision to life with effortless event planning and execution.</p>
+            <a href="{% url 'book_event' %}" class="bg-red-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-red-600 transition shadow-lg">Start Planning</a>
         </div>
-    </header>
+    </section>
 
-    <!-- Featured Menu Section -->
-    <section id="menu" class="py-12 bg-gray-50">
-        <div class="container mx-auto text-center">
-            <h2 class="text-3xl font-bold text-gray-800">Our Special Menu</h2>
-            <p class="text-gray-600 mt-2">Curated dishes made with love</p>
-            
-            <div class="grid md:grid-cols-3 gap-8 mt-8 px-4">
-                {% for item in menu %}
-                <div class="bg-white p-6 shadow-md rounded-lg">
-                    <img src="{{ item.image.url }}" alt="Dish" class="w-full h-40 object-cover rounded-md">
-                    <h3 class="text-xl font-semibold mt-4">{{ item.name }}</h3>
-                    <p class="text-gray-600 mt-2">{{ item.description }}</p>
-                    <span class="text-red-600 font-bold mt-2 block">Rs {{ item.price }}</span>
+    <!-- Features Section -->
+    <section class="py-20 bg-blue-600 whyContainer">
+        <div class="container mx-auto text-center px-6">
+            <h2 class="text-5xl font-bold mb-12">Why Choose Us?</h2>
+            <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="feature-card p-8 bg-white shadow-lg rounded-lg transition transform hover:-translate-y-2 hover:shadow-xl">
+                    <i class="fas fa-calendar-check text-5xl text-red-500 mb-4"></i>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Easy Booking</h3>
+                    <p class="text-gray-600">Book your events in just a few clicks. It's fast and simple.</p>
                 </div>
+                <div class="feature-card p-8 bg-white shadow-lg rounded-lg transition transform hover:-translate-y-2 hover:shadow-xl">
+                    <i class="fas fa-tags text-5xl text-blue-500 mb-4"></i>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Affordable Prices</h3>
+                    <p class="text-gray-600">We offer competitive pricing for all event types. No hidden charges.</p>
+                </div>
+                <div class="feature-card p-8 bg-white shadow-lg rounded-lg transition transform hover:-translate-y-2 hover:shadow-xl">
+                    <i class="fas fa-star text-5xl text-yellow-500 mb-4"></i>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Premium Services</h3>
+                    <p class="text-gray-600">Enjoy top-tier catering and event management services for your special day.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Events Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto text-center px-6">
+            <h2 class="text-5xl font-bold text-gray-800 mb-12">Your Upcoming Events</h2>
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                {% for event in events %}
+                <div class="event-card bg-white shadow-xl rounded-lg overflow-hidden transition transform hover:scale-105 duration-300">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">{{ event.get_event_type_display }}</h3>
+                        <p class="text-gray-600"><strong>Date:</strong> {{ event.event_date|date:"F d, Y" }}</p>
+                        <p class="text-gray-600"><strong>Venue:</strong> {{ event.venue }}</p>
+                        <p class="text-gray-600"><strong>Guests:</strong> {{ event.guest_count }}</p>
+                        <p class="text-gray-600"><strong>Total Price:</strong> ₹{{ event.total_price }}</p>
+                        <a href="/events/{{ event.id }}/" class="inline-block mt-4 px-6 py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition">View Details</a>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-gray-500 text-lg">No upcoming events at the moment.</p>
                 {% endfor %}
             </div>
-            <a href="{% url 'order_menu' %}" class="mt-6 inline-block bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">View Full Menu</a>
         </div>
     </section>
 
-    <!-- About Us Section -->
-    <section id="about" class="py-12 bg-white">
-        <div class="container mx-auto text-center">
-            <h2 class="text-3xl font-bold text-gray-800">About Us</h2>
-            <p class="text-gray-600 mt-2 max-w-3xl mx-auto">
-                We are a passionate catering company, bringing you fresh and delicious food with the highest quality ingredients. Whether it's a wedding, a corporate event, or a private party, we have the perfect menu for you.
-            </p>
+    <!-- Footer Section -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto text-center px-6">
+            <p class="text-lg">&copy; 2025 My Website. All rights reserved.</p>
+            <div class="mt-4">
+                <a href="#" class="text-gray-400 hover:text-white mx-2"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white mx-2"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white mx-2"><i class="fab fa-instagram"></i></a>
+            </div>
         </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-12 bg-gray-50">
-        <div class="container mx-auto text-center">
-            <h2 class="text-3xl font-bold text-gray-800">Contact Us</h2>
-            <p class="text-gray-600 mt-2">Get in touch for bookings and inquiries</p>
-            <form class="mt-6 max-w-lg mx-auto">
-                <input type="text" placeholder="Your Name" class="w-full p-3 border border-gray-300 rounded-md mb-3">
-                <input type="email" placeholder="Your Email" class="w-full p-3 border border-gray-300 rounded-md mb-3">
-                <textarea placeholder="Your Message" class="w-full p-3 border border-gray-300 rounded-md mb-3"></textarea>
-                <button class="bg-red-600 text-white px-6 py-3 rounded-md">Send Message</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white text-center py-6">
-        <p>&copy; 2025 CateringPro. All Rights Reserved.</p>
     </footer>
-
-</body>
-</html>
+{% endblock %}

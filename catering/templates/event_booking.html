@@ -3,12 +3,14 @@
 {% block title %}Event Booking{% endblock %}
 
 {% block content %}
-<div class=" mx-auto p-6 bg-gray-100 shadow-lg rounded-lg">
+<div class="mx-auto p-6 bg-white shadow-lg">
     <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Book an Event</h2>
 
     <form method="POST">
         {% csrf_token %}
+        <div class="mainform">
 
+        <div class="formContainer">
         <!-- Event Type -->
         <div class="mb-6">
             <label for="event_type" class="block text-gray-700 font-medium mb-2">Event Type</label>
@@ -41,6 +43,10 @@
             </div>
         </div>
 
+        </div>
+
+        <div class="menuContainer">
+
         <!-- Select Menu Items -->
         <div class="mb-6">
             <label for="menu_items" class="block text-gray-700 font-medium mb-2">Select Menu Items</label>
@@ -48,11 +54,14 @@
                 {{ form.menu_items }}
             </div>
         </div>
-
+    </div>
+</div>
         <!-- Submit Button -->
-        <button type="submit" class="w-full bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-200 ease-in-out">
+        <button id="submit" type="submit">
             Submit
         </button>
+
+    
     </form>
 </div>
 {% endblock %}

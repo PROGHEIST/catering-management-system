@@ -24,8 +24,17 @@
             <span class="inline-block px-4 py-2 rounded-md
                 {% if event.status == 'pending' %} bg-yellow-100 text-yellow-700 
                 {% elif event.status == 'approved' %} bg-green-100 text-green-700 
-                {% else %} bg-blue-100 text-blue-700 {% endif %}">
+                {% elif event.status == 'cancelled' %} bg-green-100 text-red-700 
+                {% elif event.status == 'completed' %} bg-green-100 text-blue-700 {% endif %}">
                 {{ event.get_status_display }}
+            </span>
+
+            <h4 class="text-xl font-semibold text-gray-800 mt-6">Payment Status:</h4>
+            <span class="inline-block px-4 py-2 rounded-md
+                {% if event.payment_status == 'pending' %} bg-yellow-100 text-yellow-700 
+                {% elif event.payment_status == 'completed' %} bg-green-100 text-green-700 
+                {% else %} bg-blue-100 text-blue-700 {% endif %}">
+                {{ event.payment_status }}
             </span>
         </div>
     </div>

@@ -9,3 +9,15 @@ body{
     height: 100vh;
     background-color: black;
 }
+.video-main{
+    width: 100%;
+    height: 100%;
+    z-index: -1111;
+}
+#main-stagger{
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    z-index: 11;
+    color: black;
+}

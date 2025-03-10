@@ -38,6 +38,7 @@ class EventBooking(models.Model):
         ('engagement', 'Engagement'),
         ('other', 'Other'),
     ]
+
     
     STATUS_CHOICES = [
         ('pending', 'Pending'),

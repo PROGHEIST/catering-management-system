@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catering Dashboard</title>
+    <title>User Dashboard</title>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 </head>
 <body class="font-sans bg-gray-100">
@@ -12,37 +12,76 @@
         <div class="w-1/5 bg-indigo-700 text-white p-5">
             <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
             <ul>
-                <li><a href="{% url 'menu_list' %}" class="block py-2 px-4 rounded hover:bg-indigo-600">Menu</a></li>
-                <li><a href="{% url 'order_menu' %}" class="block py-2 px-4 rounded hover:bg-indigo-600">Place Order</a></li>
-                <li><a href="{% url 'order_history' %}" class="block py-2 px-4 rounded hover:bg-indigo-600">Order History</a></li>
-                {% if user.is_staff %}
+                <li><a href="/" class="block py-2 px-4 rounded hover:bg-indigo-600">Home</a></li>
+                <li><a href="/menus/" class="block py-2 px-4 rounded hover:bg-indigo-600">Menu</a></li>
+                <li><a href="{% url 'book_event' %}" class="block py-2 px-4 rounded hover:bg-indigo-600">Book Event</a></li>
+                <li><a href="/events/" class="block py-2 px-4 rounded hover:bg-indigo-600">Event History</a></li>
                 <li><a href="{% url 'admin_dashboard' %}" class="block py-2 px-4 rounded hover:bg-indigo-600">Admin Dashboard</a></li>
-                {% endif %}
+                <li><a href="{% url 'login' %}" class="block py-2 px-4 rounded hover:bg-indigo-600">Login</a></li>
+                <li><a href="{% url 'logout' %}" class="block py-2 px-4 rounded hover:bg-indigo-600">Logout</a></li>
             </ul>
         </div>
         <!-- Main Content -->
         <div class="flex-1 p-6">
             <h1 class="text-3xl font-semibold text-gray-800 mb-6">Welcome, {{ user.username }}!</h1>
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Dashboard Cards -->
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
-                    <h3 class="text-xl font-semibold text-gray-800">Total Orders</h3>
-                    <p class="text-gray-500 mt-2">150</p>
+                    <h3 class="text-xl font-semibold text-gray-800">Total Booked Events</h3>
+                    <p class="text-gray-500 mt-2">{{ total_events }}</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
-                    <h3 class="text-xl font-semibold text-gray-800">Pending Orders</h3>
-                    <p class="text-gray-500 mt-2">5</p>
+                    <h3 class="text-xl font-semibold text-gray-800">Upcoming Events</h3>
+                    <p class="text-gray-500 mt-2">{{ upcoming_events }}</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
-                    <h3 class="text-xl font-semibold text-gray-800">Revenue</h3>
-                    <p class="text-gray-500 mt-2">$3,500</p>
+                    <h3 class="text-xl font-semibold text-gray-800">Past Events</h3>
+                    <p class="text-gray-500 mt-2">{{ past_events }}</p>
                 </div>
+            </div><br>
+            {% block content %}
+            {% endblock%}
+            <!-- Event History Table -->
+            <div class="mt-10 bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-4">Your Event History</h2>
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="p-3 border">Event Type</th>
+                            <th class="p-3 border">Date</th>
+                            <th class="p-3 border">Venue</th>
+                            <th class="p-3 border">Guests</th>
+                            <th class="p-3 border">Total Price</th>
+                            <th class="p-3 border">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in events %}
+                        <tr class="text-center border-b">
+                            <td class="p-3 border">{{ event.get_event_type_display }}</td>
+                            <td class="p-3 border">{{ event.event_date|date:"M d, Y" }}</td>
+                            <td class="p-3 border">{{ event.venue }}</td>
+                            <td class="p-3 border">{{ event.guest_count }}</td>
+                            <td class="p-3 border">Rs {{ event.total_price }}</td>
+                            <td class="p-3 border">
+                                <span class="px-3 py-1 rounded 
+                                    {% if event.status == 'completed' %} bg-green-500 text-white
+                                    {% elif event.status == 'pending' %} bg-yellow-500 text-white
+                                    {% elif event.status == 'cancelled' %} bg-red-500 text-white
+                                    {% else %} bg-gray-500 text-white {% endif %}">
+                                    {{ event.get_status_display }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="p-3 text-center text-gray-500">No events booked yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
 
-            
-            <div class="mt-10">
-                {% block content %}{% endblock %}
-            </div>
         </div>
     </div>
 </body>

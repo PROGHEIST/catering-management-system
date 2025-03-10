@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from .forms import UserRegistrationForm, UserLoginForm
@@ -163,9 +164,27 @@ def event_details(request, event_id):
     return render(request, 'event_details.html', {'event': event, 'name': request.user.username,})
 
 
+
+
 @login_required
 def dashboard(request):
-    return render(request, "dashboard.html")
+    user = request.user  # Get the logged-in user
+    events = EventBooking.objects.filter(customer=user).order_by('-event_date')  # Fetch user's events
+
+    total_events = events.count()  # Count total events
+    upcoming_events = events.filter(event_date__gt=timezone.now()).count()  # Count upcoming events
+    past_events = events.filter(event_date__lt=timezone.now()).count()  # Count past events
+    total_spent = sum(event.total_price for event in events if event.payment_status == 'completed')  # Sum completed payments
+
+    context = {
+        'user': user,
+        'events': events,
+        'total_events': total_events,
+        'upcoming_events': upcoming_events,
+        'past_events': past_events,
+        'total_spent': total_spent,
+    }
+    return render(request, 'dashboard.html', context)
 
 
 def is_admin(user):
@@ -175,9 +194,7 @@ def is_admin(user):
 # Ensure only admin can access the admin dashboard
 @login_required
 def admin_dashboard_view(request):
-    if not request.user.is_staff:
-        return HttpResponseForbidden("You are not authorized to view this page.")
-    return render(request, 'admin_dashboard.html')
+    return redirect('admin/')
 
 
 @staff_member_required
@@ -255,8 +272,8 @@ razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZOR
 def process_payment(request, event_id):
     event = get_object_or_404(EventBooking, id=event_id)
 
-    if event.status != 'approved':
-        return JsonResponse({'error': 'Payment is only allowed for approved events.'}, status=400)
+    # if event.status != 'approved':
+    #     return JsonResponse({'error': 'Payment is only allowed for approved events.'}, status=400)
 
     # Create a Razorpay order
     amount = int(event.total_price * 100)  # Razorpay requires amount in paise
@@ -292,11 +309,18 @@ def verify_razorpay_payment(request, event_id):
             "razorpay_signature": signature
         })
         event.payment_status = 'completed'
+        event.status = 'approved'
         event.save()
         return JsonResponse({'status': 'success'})
     except razorpay.errors.SignatureVerificationError:
+        event.status = 'pending'
+        event.save()
         return JsonResponse({'status': 'failed'})
 
 def payment_success(request, event_id):
     event = get_object_or_404(EventBooking, id=event_id, payment_status='completed')
     return render(request, 'payment_success.html', {'event': event})
+
+def about(request):
+    
+    return render(request, 'about.html', {'name': request.user})

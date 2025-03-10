@@ -3,10 +3,10 @@
 {% block title %}Event Details{% endblock %}
 
 {% block content %}
-    <div class="container mx-auto px-6 py-16 bg-gray-100">
+    <div id="eventContainer" class="bg-white">
         <h2 class="text-4xl font-bold text-center text-gray-800 mb-6">{{ event.get_event_type_display }} on {{ event.event_date|date:"F d, Y" }}</h2>
         
-        <div class="bg-white shadow-lg rounded-lg p-6">
+        <div class="event-details">
             <h3 class="text-2xl font-semibold text-gray-800 mb-4">Event Details</h3>
             
             <p class="text-gray-600"><strong>Venue:</strong> {{ event.venue }}</p>
@@ -24,8 +24,17 @@
             <span class="inline-block px-4 py-2 rounded-md
                 {% if event.status == 'pending' %} bg-yellow-100 text-yellow-700 
                 {% elif event.status == 'approved' %} bg-green-100 text-green-700 
-                {% else %} bg-blue-100 text-blue-700 {% endif %}">
+                {% elif event.status == 'cancelled' %} bg-green-100 text-red-700 
+                {% elif event.status == 'completed' %} bg-green-100 text-blue-700 {% endif %}">
                 {{ event.get_status_display }}
+            </span>
+
+            <h4 class="text-xl font-semibold text-gray-800 mt-6">Payment Status:</h4>
+            <span class="inline-block px-4 py-2 rounded-md
+                {% if event.payment_status == 'pending' %} bg-yellow-100 text-yellow-700 
+                {% elif event.payment_status == 'completed' %} bg-green-100 text-green-700 
+                {% else %} bg-blue-100 text-blue-700 {% endif %}">
+                {{ event.payment_status }}
             </span>
         </div>
     </div>

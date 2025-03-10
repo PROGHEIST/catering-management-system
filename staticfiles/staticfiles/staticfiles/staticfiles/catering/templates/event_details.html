@@ -3,7 +3,7 @@
 {% block title %}Event Details{% endblock %}
 
 {% block content %}
-    <div class="container mx-auto px-6 py-16">
+    <div class="container mx-auto px-6 py-16 bg-gray-100">
         <h2 class="text-4xl font-bold text-center text-gray-800 mb-6">{{ event.get_event_type_display }} on {{ event.event_date|date:"F d, Y" }}</h2>
         
         <div class="bg-white shadow-lg rounded-lg p-6">

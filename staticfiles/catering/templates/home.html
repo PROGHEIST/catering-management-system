@@ -4,16 +4,14 @@
 
 {% block content %}
     
-    <section id="mainContainer" class="bg-cover bg-center h-screen flex items-center justify-center text-center text-white">
-        <div class="main-imageContainer">
-            <img class="main-image" src="{% static '/images/burger.jpg' %}" alt="">
+        <video class="video-main" autoplay muted loop>
+            <source src="{% static '/images/bg_video.mp4' %}" type="video/mp4">
+          </video>
+        <div id="main-stagger">
+              <h1 id="main-head">Unforgettable Events, Seamless Planning</h1>
+              <p id="main-desc">From intimate gatherings to grand celebrations, we bring your vision to life with effortless event planning and execution.</p>
+              <a href="{% url 'book_event' %}" class="main-button">Book Event</a>
         </div>
-        <div id="main-stagger" class="z-10">
-            <h1 id="main-head">Unforgettable Events, Seamless Planning</h1>
-            <p id="main-desc">From intimate gatherings to grand celebrations, we bring your vision to life with effortless event planning and execution.</p>
-            <a href="{% url 'book_event' %}" class="main-button">Book Event</a>
-        </div>
-    </section>
 
     <div class="conatiner" id="headline">
        <h1><i class="fa-solid fa-bowl-food"></i> Best Offers <i class="fa-solid fa-bowl-food"></i></h1> 
@@ -50,8 +48,16 @@
     </div>
 
     <div class="BlackContainer">
-        <img src="" alt="">
+    <div class="imageContainer">
+        <img src="https://plus.unsplash.com/premium_photo-1687697860831-edaf70e279dd?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Catering Image 1">
+        <img src="https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Catering Image 2">
+        <img src="https://images.unsplash.com/photo-1543353071-10c8ba85a904?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Catering Image 3">
+        <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Catering Image 4">
     </div>
-
+    <div class="description">
+        <h2>Meet Our Catering Team</h2>
+        <p>Our dedicated catering team is the heart and soul of every successful event, consistently delivering exceptional food and service with a smile. They bring a passion for culinary excellence to every plate, ensuring each gathering is not just a meal but a memorable experience. From expertly preparing diverse menus to gracefully serving guests with attentiveness, our catering staff are true professionals who take pride in making every occasion special.</p>
+    </div>
+</div>
     
 {% endblock %}

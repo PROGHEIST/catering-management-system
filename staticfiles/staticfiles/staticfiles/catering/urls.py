@@ -1,16 +1,26 @@
 from django.urls import path
-from .views import Homepage, register_view, login_view, logout_view, dashboard, menu_list_view, add_menu_item_view, edit_menu_item_view, delete_menu_item_view, order_menu_view, place_order_view, order_confirmation_view, order_history_view, admin_dashboard_view
+from .views import Homepage, register_view, login_view, logout_view, dashboard, menu_list_view, add_menu_item_view, edit_menu_item_view, delete_menu_item_view, order_menu_view, place_order_view, order_confirmation_view, order_history_view, admin_dashboard_view,book_event, event_list, cancel_event, event_details, menus, menu_item, related_menu_item, process_payment, verify_razorpay_payment, payment_success
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('', Homepage, name='home'),
+    path('menus/', menus, name='menus'),
+    path('menus/<int:menu_item>', menu_item, name='menu-details'),
+    path('menus/<int:related_menu_item>', related_menu_item, name='related_menu-details'),
     path('dashboard/', dashboard, name='dashboard'),
     path('admin-dashboard/', admin_dashboard_view, name='admin_dashboard'),
     path('register/', register_view, name='register'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
+    path('book-event/', book_event, name='book_event'),
+    path('events/', event_list, name='event_list'),
+    path('events/<int:event_id>/', event_details, name='event_details'),
+    path('events/<int:event_id>/pay/', process_payment, name='initiate_payment'),
+    path('verify-payment/<int:event_id>/', verify_razorpay_payment, name='verify_payment'),
+    path('cancel-event/<int:event_id>/', cancel_event, name='cancel_event'),
     path('menu/', menu_list_view, name='menu_list'),
+    path('payment-success/<int:event_id>/', payment_success, name='payment_success'),
     path('menu/add/', add_menu_item_view, name='add_menu_item'),
     path('menu/edit/<int:pk>/', edit_menu_item_view, name='edit_menu_item'),
     path('menu/delete/<int:pk>/', delete_menu_item_view, name='delete_menu_item'),

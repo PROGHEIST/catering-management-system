@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Website{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/event_booking.css' %}">
 </head>
 <body>
 
@@ -17,16 +19,17 @@
                 <a href="/" id="logo" class="text-2xl font-bold">Catering</a>
                 <div class="hidden md:flex space-x-6">
                     <a id="nav-links" href="/" class=" px-3 py-2 rounded-md">Home</a>
-                    <a id="nav-links" href="/events/" class=" px-3 py-2 rounded-md">Events</a>
-                    <a id="nav-links" href="/menus/" class=" px-3 py-2 rounded-md">Menus</a>
+                    <a id="nav-links" href="{% url 'dashboard' %}" class=" px-3 py-2 rounded-md">Dashboard</a>
                     <a id="nav-links" href="/about/" class=" px-3 py-2 rounded-md">About</a>
+                    {% if name %}
+                    <a id="nav-links" href="{% url 'logout' %}" class="px-3 py-2 rounded-md">Logout</a>
+                    {% else %}
                     <a id="nav-links" href="{% url 'register' %}" class="px-3 py-2 rounded-md">Sign Up</a>
-                    <a onclick="LogoutBar()" id="nav-links" href="#" class=" px-3 py-2 rounded-md"><i class="fa-solid fa-user"></i> &nbsp {{ name }}</a>
+                    {% endif %}
+                    
+                    <a id="nav-links" href="#" class="user-nav px-3 py-2 rounded-md"><i class="fa-solid fa-user"></i> &nbsp {{ name }}</a>
                 </div>
-                <div class="LogoutPanel">
-                    <i class="fa fa-close"></i>
-                    <a href="{% url 'logout' %}">Logout</a>
-                </div>
+                
                 <div class="md:hidden flex items-center">
                     <button class="text-white" id="mobile-menu-button">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
@@ -42,7 +45,7 @@
             <div class="px-2 py-3 space-y-1 sm:px-3">
                 <a href="/" class="block px-3 py-2 text-base font-medium text-white hover:bg-gray-700 rounded-md">Home</a>
                 <a href="/events/" class="block px-3 py-2 text-base font-medium text-white hover:bg-gray-700 rounded-md">Events</a>
-                <a href="/about/" class="block px-3 py-2 text-base font-medium text-white hover:bg-gray-700 rounded-md">About</a>
+                <a href="{% url 'about' %}" class="block px-3 py-2 text-base font-medium text-white hover:bg-gray-700 rounded-md">About</a>
                 <a href="/contact/" class="block px-3 py-2 text-base font-medium text-white hover:bg-gray-700 rounded-md">Contact</a>
             </div>
         </div>
@@ -55,9 +58,9 @@
         {% endblock %}
     
 <!-- Footer Section -->
-<footer class="bg-gray-900 text-white py-8">
+<footer class="text-white py-8">
     <div class="container mx-auto text-center px-6">
-        <p class="text-lg">&copy; 2025 My Website. All rights reserved.</p>
+        <p class="text-lg">&copy; 2025 Catering. All rights reserved.</p>
         <div class="mt-4">
             <a href="#" class="text-gray-400 hover:text-white mx-2"><i class="fab fa-facebook-f"></i></a>
             <a href="#" class="text-gray-400 hover:text-white mx-2"><i class="fab fa-twitter"></i></a>

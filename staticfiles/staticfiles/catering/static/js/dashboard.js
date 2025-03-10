@@ -127,7 +127,5 @@ tl2.to('#headline h1',{
 })
 
 
-function LogoutBar(){
-    console.log('LogoutBar');
-    
-}
+var user = document.querySelector('.user-nav');
+

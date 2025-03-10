@@ -1,5 +1,24 @@
 var tl = gsap.timeline();
 var navs = document.querySelectorAll('#nav-links');
+var feature_card = document.querySelectorAll('.feature-card')
+
+Array.from(feature_card).forEach(card => {
+    card.onmouseover = function() {
+        gsap.to(card, {
+            duration: 0.5,
+            scale: 1.1,
+            backgroundColor: 'rgb(9, 255, 1)'
+        });
+    };
+    card.onmouseout = function() {
+        gsap.to(card, {
+            duration: 0.5,
+            scale: 1,
+            boxShadow: 'none',
+            backgroundColor: 'hsl(120, 55.60%, 98.20%)'
+        });
+    };
+});
 
 tl.from('#logo', {
     duration: 0.5,
@@ -13,7 +32,7 @@ tl.from(navs, {
     stagger: 0.2
 })
 
-tl.from('#main-head', {
+tl.from('#main-stagger', {
     duration: 0.5,
     y: -100,
     opacity: 0,
@@ -45,6 +64,45 @@ gsap.to('.your-events',{
     }
 })
 
+gsap.from(feature_card, {
+  duration: 1,
+  opacity: 0,
+  y: 50,
+  scrollTrigger:{
+    trigger: '.whyContainer',
+    scroller: 'body', 
+    start: 'top 80%',
+    end: 'bottom 50%',
+    scrub: true
+  }  
+})
+
+gsap.from('.whyContainer h2', {
+    duration: 1,
+    opacity: 0,
+    y: 50,
+    scrollTrigger:{
+      trigger: '.whyContainer',
+      scroller: 'body', 
+      start: 'top 80%',
+      end: 'bottom 50%',
+      scrub: true
+    }  
+  })
+
+// gsap.to('.BestContainer h1',{
+//     duration: 1,
+//     transform: 'translateX(-790%)',
+//     scrollTrigger: {
+//         trigger: '.BestContainer',
+//         scroller:'body',
+//         markers: true,
+//         start: 'top 80%',
+//         end: 'bottom 0%',
+//         scrub:true,
+//         pin:true
+//     }
+// })
 
 onscroll = function () {
     if (window.scrollY > 100) {
@@ -60,4 +118,12 @@ onscroll = function () {
     }
 }
 
-// ------
+var tl2 = gsap.timeline()
+
+tl2.to('#headline h1',{
+    duration: 10,
+    delay: 1,
+    repeat: -1,
+    
+    transform: 'translateX(-290%)',
+})

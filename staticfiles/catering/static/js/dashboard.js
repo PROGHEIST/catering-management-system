@@ -127,9 +127,5 @@ tl2.to('#headline h1',{
 })
 
 
-document.ready(function(){
-    $('.user-nav').click(function(){
-        console.log('use clicked');
-        
-    })
-})
+
+

@@ -1,9 +1,4 @@
 body{
-    /* background-image: url('https://images.unsplash.com/photo-1640798629665-cb874ae363d2?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center; */
     background-color: black;
     font-family: 'Roboto', sans-serif;
     padding: 0;
@@ -16,16 +11,23 @@ nav{
     background-color: transparent;
     color: black;
 }
+#logo{
+    color: white;
+}
 
 #nav-links{
-    color: black;
+    color: rgb(255, 255, 255);
 }
 
 #nav-links:hover{
-    background-color: rgb(236, 163, 4);
+    background-color: rgb(65, 65, 65);
 }
 
-.whyContainer{
-    background-color: black;
-    color: white;
+#mainContainer{
+background-color: black;
+}
+.main-image{
+    height: 500px;
+    width: 500px;
+    mix-blend-mode: multiply;
 }
