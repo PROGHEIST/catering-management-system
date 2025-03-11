@@ -1,43 +1,40 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Menu Items</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    </head>
-    <body>
-        <h2 class="text-2xl font-bold mb-4">Menu Items</h2>
+{% extends "base.html" %}
 
-<a href="{% url 'add_menu_item' %}" class="inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mb-4">Add New Menu Item</a>
+{% block title %}Manage Menus{% endblock %}
 
-<table class="min-w-full table-auto border-collapse border border-gray-300">
-    <thead>
-        <tr>
-            <th class="px-4 py-2 border-b text-left text-sm font-semibold text-gray-700">Name</th>
-            <th class="px-4 py-2 border-b text-left text-sm font-semibold text-gray-700">Description</th>
-            <th class="px-4 py-2 border-b text-left text-sm font-semibold text-gray-700">Price</th>
-            <th class="px-4 py-2 border-b text-left text-sm font-semibold text-gray-700">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in menu_items %}
-            <tr class="bg-white hover:bg-gray-100">
-                <td class="px-4 py-2 border-b text-sm">{{ item.name }}</td>
-                <td class="px-4 py-2 border-b text-sm">{{ item.description }}</td>
-                <td class="px-4 py-2 border-b text-sm">${{ item.price }}</td>
-                <td class="px-4 py-2 border-b text-sm">
-                    <a href="{% url 'edit_menu_item' item.pk %}" class="text-blue-500 hover:text-blue-700">Edit</a> |
-                    <a href="{% url 'delete_menu_item' item.pk %}" class="text-red-500 hover:text-red-700">Delete</a>
+{% block content %}
+<div class="max-w-6xl mx-auto p-6">
+    <h2 class="text-3xl font-bold mb-6">Manage Menu</h2>
+    <a href="{% url 'add_menu' %}" class="bg-blue-500 text-white px-4 py-2 rounded">+ Add New Menu</a>
+
+    <table class="w-full mt-6 bg-white shadow-md rounded-lg overflow-hidden">
+        <thead>
+            <tr class="bg-gray-200 text-gray-700">
+                <th class="p-4">Image</th>
+                <th class="p-4">Name</th>
+                <th class="p-4">Category</th>
+                <th class="p-4">Price</th>
+                <th class="p-4">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for menu in menus %}
+            <tr class="border-b">
+                <td class="p-4"><img src="{{ menu.image.url }}" alt="{{ menu.name }}" class="w-16 h-16 rounded"></td>
+                <td class="p-4">{{ menu.name }}</td>
+                <td class="p-4">{{ menu.get_category_display }}</td>
+                <td class="p-4">₹{{ menu.price }}</td>
+                <td class="p-4">
+                    <a href="{% url 'edit_menu' menu.id %}" class="text-blue-500">Edit</a> | 
+                    <a href="{% url 'delete_menu' menu.id %}" class="text-red-500">Delete</a>
                 </td>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-        <script src="" async defer></script>
-    </body>
-</html>
-
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center p-4 text-gray-500">No menu items available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

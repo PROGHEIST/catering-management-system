@@ -1,17 +1,115 @@
-{% extends 'dashboard.html' %}
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
 
 {% block content %}
-    <h2 class="text-2xl font-bold text-gray-800">Admin Dashboard</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-        <!-- New Menu Item Card -->
-        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
-            <h3 class="text-xl font-semibold text-gray-800">Add New Menu Item</h3>
-            <a href="{% url 'add_menu_item' %}" class="text-indigo-500 hover:underline">Click to Add</a>
+<body class="bg-gray-300">
+<div class="max-w-7xl mx-auto p-6 bg-gray-100">
+    <h2 class="text-4xl font-bold text-center text-gray-800 mb-6">Admin Dashboard</h2>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+            <h3 class="text-xl font-bold">Total Users</h3>
+            <p class="text-3xl font-semibold text-blue-500">{{ total_users }}</p>
         </div>
-        <!-- Orders to Process Card -->
-        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
-            <h3 class="text-xl font-semibold text-gray-800">Orders to Process</h3>
-            <p class="text-gray-500 mt-2">5</p>
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+            <h3 class="text-xl font-bold">Total Menus</h3>
+            <p class="text-3xl font-semibold text-green-500">{{ total_menus }}</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+            <h3 class="text-xl font-bold">Total Events</h3>
+            <p class="text-3xl font-semibold text-purple-500">{{ total_events }}</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+            <h3 class="text-xl font-bold">Pending Events</h3>
+            <p class="text-3xl font-semibold text-red-500">{{ pending_events }}</p>
         </div>
     </div>
+
+    <!-- Revenue Card -->
+    <div class="mt-8">
+        <div class="bg-green-100 p-6 rounded-lg shadow-lg text-center">
+            <h3 class="text-xl font-bold text-green-700">Total Revenue from Events</h3>
+            <p class="text-4xl font-semibold text-green-600">₹ {{ total_revenue }}</p>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="mt-8">
+        <h3 class="text-xl font-bold">Quick Actions</h3>
+        <div class="flex gap-4 mt-4">
+            <a href="{% url 'menu_list' %}" class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600 transition">Manage Menu</a>
+            <a href="{% url 'add_menu' %}" class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600 transition">Add Menu</a>
+            <a href="{% url 'all_events' %}" class="bg-purple-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-purple-600 transition">View All Events</a>
+            <a href="{% url 'admin:index' %}" class="bg-gray-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-gray-600 transition">Django Admin</a>
+        </div>
+    </div>
+</div>
+
+    <!-- Recent Bookings -->
+    <div class="mt-10">
+        <h3 class="text-2xl font-bold mb-4">Recent Event Bookings</h3>
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr>
+                        <th class="border-b p-3">Customer</th>
+                        <th class="border-b p-3">Event Type</th>
+                        <th class="border-b p-3">Date</th>
+                        <th class="border-b p-3">Status</th>
+                        <th class="border-b p-3">Price</th>
+                        <th class="border-b p-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in recent_events %}
+                    <tr class="hover:bg-gray-100">
+                        <td class="p-3">{{ event.customer.username }}</td>
+                        <td class="p-3">{{ event.get_event_type_display }}</td>
+                        <td class="p-3">{{ event.event_date|date:"M d, Y" }}</td>
+                        <td class="p-3">
+                            <span class="px-2 py-1 rounded text-white {% if event.status == 'approved' %} bg-green-500 {% elif event.status == 'pending' %} bg-yellow-500 {% else %} bg-red-500 {% endif %}">
+                                {{ event.status }}
+                            </span>
+                        </td>
+                        <td class="p-3">₹ {{ event.total_price }}</td>
+
+                        <td class="p-3">
+                            <a href="{% url 'update_event' event.id %}" class="text-blue-500 hover:underline">Edit</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Chart Section -->
+    <div class="mt-10 bg-white p-6 rounded-lg shadow-lg">
+        <h3 class="text-2xl font-bold mb-4">Event Statistics</h3>
+        <canvas id="eventChart"></canvas>
+    </div>
+
+
+<!-- ChartJS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById("eventChart").getContext("2d");
+    var eventChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ["Pending", "Approved", "Completed", "Cancelled"],
+            datasets: [{
+                label: "Event Status",
+                data: [{{ pending_events }}, {{ approved_events }}, {{ completed_events }}, {{ cancelled_events }}],
+                backgroundColor: ["yellow", "green", "blue", "red"]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
+</body>
 {% endblock %}

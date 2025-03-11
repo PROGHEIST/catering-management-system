@@ -10,58 +10,96 @@
         {% csrf_token %}
         <div class="mainform">
 
-        <div class="formContainer">
-        <!-- Event Type -->
-        <div class="mb-6">
-            <label for="event_type" class="block text-gray-700 font-medium mb-2">Event Type</label>
-            <div class="relative">
-                {{ form.event_type }}
+            <div class="formContainer">
+                <!-- Event Type -->
+                <div class="mb-6">
+                    <label for="event_type" class="block text-gray-700 font-medium mb-2">Event Type</label>
+                    <div class="relative">
+                        {{ form.event_type }}
+                    </div>
+                </div>
+
+                <!-- Event Date & Time -->
+                <div class="mb-6">
+                    <label for="event_date" class="block text-gray-700 font-medium mb-2">Event Date & Time</label>
+                    <div class="relative">
+                        <input type="datetime-local" name="event_date" id="event_date" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                </div>
+
+                <!-- Venue -->
+                <div class="mb-6">
+                    <label for="venue" class="block text-gray-700 font-medium mb-2">Venue</label>
+                    <div class="relative">
+                        {{ form.venue }}
+                    </div>
+                </div>
+
+                <!-- Guest Count -->
+                <div class="mb-6">
+                    <label for="guest_count" class="block text-gray-700 font-medium mb-2">Guest Count</label>
+                    <div class="relative">
+                        {{ form.guest_count }}
+                    </div>
+                </div>
             </div>
+
+            <!-- Menu Selection -->
+            <div x-data="{ showModal: false, selectedItems: [] }" class="menuContainer">
+                <label class="block text-gray-700 font-medium mb-2">Select Menu Items</label>
+                <button type="button" @click="showModal = true" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
+                    Choose Menu Items
+                </button>
+                <p class="text-gray-600 mt-2">
+                    Selected Items: <span x-text="selectedItems.join(', ') || 'None'"></span>
+                </p>
+
+                <!-- Modal Popup -->
+                <!-- Popup Modal -->
+<div x-show="showModal" class="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center overflow-y-auto">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-3/4 max-w-3xl relative max-h-[90vh] overflow-y-auto">
+        <h3 class="text-lg font-semibold mb-4">Select Menu Items</h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {% for item in form.menu_items.field.queryset %}
+            <label for="menu_{{ item.id }}" class="cursor-pointer">
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-24 h-24 object-cover mx-auto rounded-md mb-2">
+                    <h4 class="text-md font-semibold">{{ item.name }}</h4>
+                    <p class="text-sm text-gray-500">{{ item.category }}</p>
+                    <p class="text-indigo-600 font-semibold mt-1">₹{{ item.price }}</p>
+
+                    <!-- Checkbox -->
+                    <input type="checkbox" id="menu_{{ item.id }}" name="menu_items" value="{{ item.id }}"
+                        class="hidden peer" @change="event.target.checked ? selectedItems.push('{{ item.name }}') : selectedItems.splice(selectedItems.indexOf('{{ item.name }}'), 1)">
+                    
+                    <label for="menu_{{ item.id }}"
+                        class="block w-full bg-gray-200 hover:bg-indigo-600 hover:text-white text-gray-800 font-semibold py-2 px-4 rounded-md text-sm transition-all duration-200 peer-checked:bg-indigo-600 peer-checked:text-white">
+                        Select
+                    </label>
+                </div>
+            </label>
+            {% endfor %}
         </div>
 
-        <!-- Event Date & Time -->
-        <div class="mb-6">
-            <label for="event_date" class="block text-gray-700 font-medium mb-2">Event Date & Time</label>
-            <div class="relative">
-                <input type="datetime-local" name="event_date" id="event_date" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-            </div>
-        </div>
-
-        <!-- Venue -->
-        <div class="mb-6">
-            <label for="venue" class="block text-gray-700 font-medium mb-2">Venue</label>
-            <div class="relative">
-                {{ form.venue }}
-            </div>
-        </div>
-
-        <!-- Guest Count -->
-        <div class="mb-6">
-            <label for="guest_count" class="block text-gray-700 font-medium mb-2">Guest Count</label>
-            <div class="relative">
-                {{ form.guest_count }}
-            </div>
-        </div>
-
-        </div>
-
-        <div class="menuContainer">
-
-        <!-- Select Menu Items -->
-        <div class="mb-6">
-            <label for="menu_items" class="block text-gray-700 font-medium mb-2">Select Menu Items</label>
-            <div class="relative">
-                {{ form.menu_items }}
-            </div>
+        <!-- Close Button -->
+        <div class="mt-6 text-right">
+            <button @click="showModal = false" class="bg-red-500 text-white px-4 py-2 rounded-md">
+                Close
+            </button>
         </div>
     </div>
 </div>
+
+            </div>
+        </div>
+
         <!-- Submit Button -->
-        <button id="submit" type="submit">
+        <button id="submit" type="submit" class="bg-green-600 text-white px-6 py-2 rounded-md mt-4 hover:bg-green-700">
             Submit
         </button>
-
-    
     </form>
 </div>
+
+
 {% endblock %}

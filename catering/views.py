@@ -5,16 +5,14 @@ from .forms import UserRegistrationForm, UserLoginForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import MenuForm, EventBookingForm
 from django.contrib.admin.views.decorators import staff_member_required
-from .models import Menu, EventBooking
+from .models import EventBooking, User, Menu
 from django.http import HttpResponseForbidden
 from django.contrib import messages
 import razorpay
 from django.http import JsonResponse
-import razorpay
 from django.conf import settings
-
-
-
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 
@@ -165,6 +163,18 @@ def event_details(request, event_id):
 
 
 
+def update_event(request, event_id):
+    event = get_object_or_404(EventBooking, id=event_id)
+    
+    if request.method == 'POST':
+        form = EventBookingForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            return redirect('all_events')  # Redirect to the all events page after saving
+    else:
+        form = EventBookingForm(instance=event)
+
+    return render(request, 'admin/update_event.html', {'form': form, 'event': event})
 
 @login_required
 def dashboard(request):
@@ -193,48 +203,67 @@ def is_admin(user):
     return user.role == 'admin'
 
 
-# Ensure only admin can access the admin dashboard
-@login_required
-def admin_dashboard_view(request):
-    return redirect('admin/')
-
 
 @staff_member_required
-def menu_list_view(request):
-    menu_items = Menu.objects.all()
-    return render(request, "admin/menu_list.html", {"menu_items": menu_items})
+def admin_dashboard(request):
+    total_users = User.objects.count()
+    total_menus = Menu.objects.count()
+    total_events = EventBooking.objects.count()
+    pending_events = EventBooking.objects.filter(status='pending').count()
+    approved_events = EventBooking.objects.filter(status='approved').count()
+    completed_events = EventBooking.objects.filter(status='completed').count()
+    cancelled_events = EventBooking.objects.filter(status='cancelled').count()
+    
+    total_revenue = sum(event.total_price for event in EventBooking.objects.filter(status="completed"))
+
+    recent_events = EventBooking.objects.order_by('-event_date')[:5]  # Show 5 latest events
+
+    context = {
+        'total_users': total_users,
+        'total_menus': total_menus,
+        'total_events': total_events,
+        'pending_events': pending_events,
+        'approved_events': approved_events,
+        'completed_events': completed_events,
+        'cancelled_events': cancelled_events,
+        'total_revenue': total_revenue,
+        'recent_events': recent_events
+    }
+    return render(request, 'admin_dashboard.html', context)
 
 @staff_member_required
-def add_menu_item_view(request):
-    if request.method == "POST":
+def menu_list(request):
+    menus = Menu.objects.all()
+    return render(request, 'admin/menu_list.html', {'menus': menus})
+
+@staff_member_required
+def add_menu(request):
+    if request.method == 'POST':
         form = MenuForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('menu_list')
     else:
         form = MenuForm()
-    return render(request, "admin/add_menu_item.html", {"form": form})
+    return render(request, 'admin/add_menu.html', {'form': form})
 
 @staff_member_required
-def edit_menu_item_view(request, pk):
-    menu_item = get_object_or_404(Menu, pk=pk)
-    if request.method == "POST":
-        form = MenuForm(request.POST, request.FILES, instance=menu_item)
+def edit_menu(request, menu_id):
+    menu = get_object_or_404(Menu, id=menu_id)
+    if request.method == 'POST':
+        form = MenuForm(request.POST, request.FILES, instance=menu)
         if form.is_valid():
             form.save()
             return redirect('menu_list')
     else:
-        form = MenuForm(instance=menu_item)
-    return render(request, "admin/edit_menu_item.html", {"form": form})
+        form = MenuForm(instance=menu)
+    return render(request, 'admin/edit_menu.html', {'form': form})
 
 @staff_member_required
-def delete_menu_item_view(request, pk):
-    menu_item = get_object_or_404(Menu, pk=pk)
-    if request.method == "POST":
-        menu_item.delete()
-        return redirect('menu_list')
-    return render(request, "admin/delete_menu_item.html", {"menu_item": menu_item})
-
+def delete_menu(request, menu_id):
+    menu = get_object_or_404(Menu, id=menu_id)
+    menu.delete()
+    return redirect('menu_list')
 
 
 
@@ -274,9 +303,6 @@ razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZOR
 def process_payment(request, event_id):
     event = get_object_or_404(EventBooking, id=event_id)
 
-    # if event.status != 'approved':
-    #     return JsonResponse({'error': 'Payment is only allowed for approved events.'}, status=400)
-
     # Create a Razorpay order
     amount = int(event.total_price * 100)  # Razorpay requires amount in paise
     currency = "INR"
@@ -297,6 +323,7 @@ def process_payment(request, event_id):
         "key": settings.RAZORPAY_KEY_ID
     })
 
+
 @login_required
 def verify_razorpay_payment(request, event_id):
     event = get_object_or_404(EventBooking, id=event_id)
@@ -313,11 +340,12 @@ def verify_razorpay_payment(request, event_id):
         event.payment_status = 'completed'
         event.status = 'approved'
         event.save()
-        return JsonResponse({'status': 'success'})
+        return redirect('payment_success')
     except razorpay.errors.SignatureVerificationError:
         event.status = 'pending'
         event.save()
-        return JsonResponse({'status': 'failed'})
+        return redirect('payment_failed')
+
 
 def payment_success(request, event_id):
     event = get_object_or_404(EventBooking, id=event_id, payment_status='completed')
@@ -325,3 +353,8 @@ def payment_success(request, event_id):
 
 def about(request):
     return render(request, 'about.html', {'name': request.user})
+
+
+def all_events(request):
+    events = EventBooking.objects.all().order_by('-event_date')
+    return render(request, 'admin/all_events.html', {'events': events})

@@ -15,11 +15,20 @@ class UserLoginForm(AuthenticationForm):
     pass
 
 
+from django import forms
+from .models import Menu
+
 class MenuForm(forms.ModelForm):
     class Meta:
         model = Menu
         fields = ['name', 'description', 'price', 'image', 'category']
-
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'w-full px-4 py-2 border rounded'}),
+            'description': forms.Textarea(attrs={'class': 'w-full px-4 py-2 border rounded'}),
+            'price': forms.NumberInput(attrs={'class': 'w-full px-4 py-2 border rounded'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'w-full px-4 py-2 border rounded'}),
+            'category': forms.Select(attrs={'class': 'w-full px-4 py-2 border rounded'}),
+        }
 
 
 
@@ -34,7 +43,7 @@ class EventBookingForm(forms.ModelForm):
 
     class Meta:
         model = EventBooking
-        fields = ['event_type', 'event_date', 'venue', 'guest_count', 'menu_items']
+        fields = ['event_type', 'event_date', 'venue', 'guest_count','status', 'menu_items']
         widgets = {
             'event_type': forms.Select(attrs={
                 'class': 'block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500'
@@ -48,6 +57,9 @@ class EventBookingForm(forms.ModelForm):
             }),
             'guest_count': forms.NumberInput(attrs={
                 'min': 1,
+                'class': 'block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500'
+            }),
+            'status': forms.Select(attrs={
                 'class': 'block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500'
             }),
         }

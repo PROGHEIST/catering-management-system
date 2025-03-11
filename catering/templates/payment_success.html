@@ -1,14 +1,16 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block title %}Payment Successful{% endblock %}
 
 {% block content %}
-<div class="container mx-auto text-center py-10">
-    <h2 class="text-3xl font-semibold text-green-600">Payment Successful!</h2>
-    <p class="text-lg mt-4">Thank you for your payment for <strong>{{ event.event_name }}</strong>.</p>
-    <p><strong>Transaction ID:</strong> {{ event.razorpay_payment_id }}</p>
-    <p><strong>Order ID:</strong> {{ event.razorpay_order_id }}</p>
-    
-    <a href="{% url 'event_list' %}" class="mt-6 inline-block bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600">
-        Go to My Events
-    </a>
+<div class="flex items-center justify-center min-h-screen bg-green-100">
+    <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+        <div class="text-green-500 text-5xl mb-4">✅</div>
+        <h1 class="text-2xl font-bold text-green-700">Payment Successful!</h1>
+        <p class="text-gray-600 mt-2">Your booking has been confirmed. Thank you for choosing our service!</p>
+        <a href="{% url 'dashboard' %}" class="mt-6 inline-block bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600">
+            Go to Dashboard
+        </a>
+    </div>
 </div>
 {% endblock %}

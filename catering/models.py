@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.utils.timezone import now
 
 class User(AbstractUser):
     ROLE_CHOICES = [
@@ -68,11 +69,17 @@ class EventBooking(models.Model):
 
     
     def save(self, *args, **kwargs):
+        if self.event_date < now() and self.status != 'completed':
+            self.status = 'completed'
+
+        super().save(*args, **kwargs)
+
         if not self.pk:  # If the instance is not yet saved (no primary key)
             super().save(*args, **kwargs)  # Save it first
         
         self.total_price = self.calculate_total_price()
-        super().save(*args, **kwargs)  # Save again after total_price calculation
+        super().save(*args, **kwargs) 
+        
 
 
     def __str__(self):
