@@ -227,14 +227,15 @@ def admin_dashboard(request):
         'completed_events': completed_events,
         'cancelled_events': cancelled_events,
         'total_revenue': total_revenue,
-        'recent_events': recent_events
+        'recent_events': recent_events,
+        'name': request.user.username
     }
     return render(request, 'admin_dashboard.html', context)
 
 @staff_member_required
 def menu_list(request):
     menus = Menu.objects.all()
-    return render(request, 'admin/menu_list.html', {'menus': menus})
+    return render(request, 'admin/menu_list.html', {'menus': menus, 'name': request.user.username})
 
 @staff_member_required
 def add_menu(request):
@@ -245,7 +246,7 @@ def add_menu(request):
             return redirect('menu_list')
     else:
         form = MenuForm()
-    return render(request, 'admin/add_menu.html', {'form': form})
+    return render(request, 'admin/add_menu.html', {'form': form, 'name': request.user.username})
 
 @staff_member_required
 def edit_menu(request, menu_id):
@@ -257,7 +258,7 @@ def edit_menu(request, menu_id):
             return redirect('menu_list')
     else:
         form = MenuForm(instance=menu)
-    return render(request, 'admin/edit_menu.html', {'form': form})
+    return render(request, 'admin/edit_menu.html', {'form': form, 'name': request.user.username})
 
 @staff_member_required
 def delete_menu(request, menu_id):
