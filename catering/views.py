@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from .forms import UserRegistrationForm, UserLoginForm
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .forms import MenuForm, EventBookingForm
+from .forms import MenuForm, EventBookingForm, EventBookingUpdateForm
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import EventBooking, User, Menu
 from django.http import HttpResponseForbidden
@@ -167,12 +167,12 @@ def update_event(request, event_id):
     event = get_object_or_404(EventBooking, id=event_id)
     
     if request.method == 'POST':
-        form = EventBookingForm(request.POST, instance=event)
+        form = EventBookingUpdateForm(request.POST, instance=event)
         if form.is_valid():
             form.save()
             return redirect('all_events')  # Redirect to the all events page after saving
     else:
-        form = EventBookingForm(instance=event)
+        form = EventBookingUpdateForm(instance=event)
 
     return render(request, 'admin/update_event.html', {'form': form, 'event': event})
 
