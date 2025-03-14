@@ -13,7 +13,8 @@ from django.http import JsonResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import json
-
+from datetime import datetime
+from django.utils.timezone import make_aware
 
 
 
@@ -118,18 +119,31 @@ def logout_view(request):
 
 @login_required
 def book_event(request):
+    booked_dates = list(EventBooking.objects.values_list('event_date', flat=True))
+
     if request.method == "POST":
         form = EventBookingForm(request.POST)
+
+        event_date_str = request.POST.get("event_date")
+        event_date_obj = datetime.strptime(event_date_str, "%Y-%m-%dT%H:%M")  # Convert string to datetime object
+        event_date_obj = make_aware(event_date_obj)  # Convert to timezone-aware datetime
+
+        if EventBooking.objects.filter(event_date__date=event_date_obj.date()).exists():
+            messages.error(request, "This date is already booked. Please choose another date.")
+            return redirect('book_event')
+
         if form.is_valid():
             event = form.save(commit=False)  # Save the instance first
             event.customer = request.user  # Assign the logged-in user
             event.save()  # Save the event before adding menu items
             form.save_m2m()  # Save ManyToMany field (menu_items)
             return redirect('event_list')  # Redirect to success page
+        else:
+            return render(request, 'event_booking.html', {'form': form, 'name': request.user.username, 'booked_dates': booked_dates})        
     else:
         form = EventBookingForm()
 
-    return render(request, 'event_booking.html', {'form': form, 'name': request.user.username})
+    return render(request, 'event_booking.html', {'form': form, 'name': request.user.username, 'booked_dates': booked_dates})
 
 
 @login_required
@@ -228,7 +242,11 @@ def admin_dashboard(request):
         'cancelled_events': cancelled_events,
         'total_revenue': total_revenue,
         'recent_events': recent_events,
+<<<<<<< HEAD
         'name': request.user.username
+=======
+        'name' : request.user.username
+>>>>>>> d0389d6 (one event on single date)
     }
     return render(request, 'admin_dashboard.html', context)
 

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.utils.timezone import now
+from django.core.exceptions import ValidationError
 
 class User(AbstractUser):
     ROLE_CHOICES = [
@@ -50,7 +51,7 @@ class EventBooking(models.Model):
 
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     event_type = models.CharField(max_length=20, choices=EVENT_CHOICES, default='other')
-    event_date = models.DateTimeField()
+    event_date = models.DateTimeField(unique=True)
     venue = models.CharField(max_length=255)
     guest_count = models.IntegerField()
     menu_items = models.ManyToManyField(Menu)
@@ -78,8 +79,10 @@ class EventBooking(models.Model):
             super().save(*args, **kwargs)  # Save it first
         
         self.total_price = self.calculate_total_price()
+    
         super().save(*args, **kwargs) 
-        
+    
+            
 
 
     def __str__(self):
