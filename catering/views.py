@@ -242,11 +242,7 @@ def admin_dashboard(request):
         'cancelled_events': cancelled_events,
         'total_revenue': total_revenue,
         'recent_events': recent_events,
-<<<<<<< HEAD
         'name': request.user.username
-=======
-        'name' : request.user.username
->>>>>>> d0389d6 (one event on single date)
     }
     return render(request, 'admin_dashboard.html', context)
 

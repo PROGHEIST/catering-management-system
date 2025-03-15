@@ -67,15 +67,11 @@ class EventBookingForm(forms.ModelForm):
         # Wrap the menu_items in a div container to control its size
         self.fields['menu_items'].widget.attrs['class'] = 'block w-full border-gray-300 focus:ring-indigo-500 rounded-md py-2'
 
-<<<<<<< HEAD
-=======
     def clean_event_date(self):
         event_date = self.cleaned_data.get('event_date')
         if EventBooking.objects.filter(event_date=event_date).exists():
             raise forms.ValidationError("This date is already booked. Please choose another date.")
         return event_date
-
->>>>>>> d0389d6 (one event on single date)
 
 class EventBookingUpdateForm(forms.ModelForm):
     menu_items = forms.ModelMultipleChoiceField(
